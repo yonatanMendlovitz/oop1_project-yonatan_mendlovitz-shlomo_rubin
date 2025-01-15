@@ -1,3 +1,5 @@
+// GameObject.h
+
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
@@ -13,13 +15,10 @@ public:
     GameObject(const sf::Vector2f& pos, const sf::Vector2f& size);
     virtual ~GameObject() = default;
 
-    virtual void update(float deltaTime) = 0;
     virtual void render(sf::RenderWindow& window) const;
-    virtual void onCollision(GameObject& other) = 0;
-
     sf::Vector2f getPosition() const;
     sf::Vector2f getSize() const;
     sf::FloatRect getBounds() const;
 };
 
-#endif 
+#endif
