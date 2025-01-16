@@ -7,13 +7,18 @@
 //    return sf::Vector2f(vector.x * scalar, vector.y * scalar);
 //}
 
-Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
+Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture)
     : MovableObject(pos, size, texture), lives(3), score(0) {
+}
+
+Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size) :
+    Player(pos, size, ResourceManager::Textures.getTexture('#')) {
 }
 
 void Player::update(float deltaTime) {
     // Update position based on direction and velocity
     position += direction * velocity * deltaTime;
+    sprite.setPosition(position);
 }
 
 void Player::onCollision(GameObject& other) {

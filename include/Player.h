@@ -9,7 +9,8 @@ private:
     int score;
 
 public:
-    Player(const sf::Vector2f& pos, const sf::Vector2f& size,  const sf::Texture& texture);
+    Player(const sf::Vector2f& pos, const sf::Vector2f& size,  const sf::Texture* texture);
+    Player(const sf::Vector2f& pos, const sf::Vector2f& size);
     void update(float deltaTime) override;
     void onCollision(GameObject& other) override;
     void onExplosionEffect();

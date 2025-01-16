@@ -1,8 +1,22 @@
-﻿configure_file ("guard.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("player.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("stone.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("blank.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("door.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("gameImage.jpeg" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("Toolbox.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+﻿# Copy texture files
+configure_file("guard.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("player.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("stone.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("blank.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("door.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("gameImage.jpeg" ${CMAKE_BINARY_DIR} COPYONLY)
+
+# Copy sound files
+configure_file("01_main_menu.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("02_the_level_begins.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("03_level_theme.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("04_door_search.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("05_level_completed.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("06_invincibility_theme.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("08_death.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("09_game_over.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("10_ending_theme.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+
+# Copy text file
+configure_file("Toolbox.txt" ${CMAKE_BINARY_DIR} COPYONLY)

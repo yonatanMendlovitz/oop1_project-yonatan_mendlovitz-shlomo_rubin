@@ -1,6 +1,6 @@
 #include "MovableObject.h"
 
-MovableObject::MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
+MovableObject::MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture)
     : GameObject(pos, size, texture), velocity(0), direction(0, 0) {
 }
 

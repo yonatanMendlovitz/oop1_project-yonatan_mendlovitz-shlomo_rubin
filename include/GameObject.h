@@ -2,8 +2,8 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
-#include <SFML/Graphics.hpp>
-//#include <SFML/System/Vector2.hpp>
+#include"ResourceManager.h"
+
 class GameObject {
 protected:
     sf::Vector2f position;
@@ -11,7 +11,7 @@ protected:
     sf::Sprite sprite;
 
 public:
-    GameObject(const sf::Vector2f& pos, const sf::Vector2f& size,const sf::Texture& texture);
+    GameObject(const sf::Vector2f& pos, const sf::Vector2f& size,const sf::Texture* texture);
     GameObject(const GameObject& other); // Copy constructor
     GameObject& operator=(const GameObject& other); // Copy assignment operator
     virtual ~GameObject() = default;

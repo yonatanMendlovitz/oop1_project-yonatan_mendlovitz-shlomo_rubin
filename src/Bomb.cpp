@@ -3,19 +3,18 @@
 #include <cmath>
 #include <iostream>
 
-Bomb::Bomb(const sf::Vector2f& pos, const sf::Vector2f& size, float timer, float radius,  const sf::Texture& texture)
-    : StaticObject(pos, size, texture), timer(timer), explosionRadius(radius) {
+Bomb::Bomb(const sf::Vector2f& pos, const sf::Vector2f& size, float timer, float radius,  const sf::Texture* texture)
+    : StaticObject(pos, size, texture), timer(timer){
 }
 
 Bomb::Bomb(const Bomb& other)
-    : StaticObject(other), timer(other.timer), explosionRadius(other.explosionRadius) {
+    : StaticObject(other), timer(other.timer) {
 }
 
 Bomb& Bomb::operator=(const Bomb& other) {
     if (this == &other) return *this;
     StaticObject::operator=(other);
     timer = other.timer;
-    explosionRadius = other.explosionRadius;
     return *this;
 }
 
