@@ -23,19 +23,19 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
     while (std::getline(inputFile, line)) {
         m_board.push_back(std::vector<std::unique_ptr<StaticObject>>());
         for (int col = 0; col < line.size(); ++col) {
-            char tile = line[col];
+char tile = line[col];
             switch (tile) {
             case '#': // Wall
-                m_board[row].push_back(std::make_unique<Wall>(sf::Vector2f(col * 32, row * 32), sf::Vector2f(32, 32)));//eljfhjkergruegtuoreu
+                m_board[row].push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));//eljfhjkergruegtuoreu
                 break;
             case '/': // Player
                 m_board[row].push_back(nullptr); // No static object
-                player = std::make_unique<Player>(sf::Vector2f(col * 32, row * 32), sf::Vector2f(32, 32));
+                player = std::make_unique<Player>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100));
                 break;
             case '!': // Enemy (Guard)
                 m_board[row].push_back(nullptr); // No static object
-                guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 32, row * 32), sf::Vector2f(32, 32)));
-                break;
+                guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
+                break;            
             case ' ': // Empty space
             default:
                 m_board[row].push_back(nullptr);
@@ -47,7 +47,7 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
 }
 
 void ObjectManager::addBomb(sf::Vector2f position, float timer, float radius) {
-    bombs.push_back(std::make_unique<Bomb>(position, sf::Vector2f(32, 32)));
+    bombs.push_back(std::make_unique<Bomb>(position, sf::Vector2f(100, 100)));
 }
 
 void ObjectManager::update(float deltaTime) {
@@ -120,3 +120,4 @@ void ObjectManager::addScore(int points) {
 void ObjectManager::loseLife() {
     --lives;
 }
+

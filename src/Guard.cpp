@@ -15,7 +15,7 @@ void Guard::update(float deltaTime) {
     sprite.setPosition(position);
 
     // Example patrol boundary logic
-    if (position.x < 0 || position.x > 800) { // Assuming screen width is 800
+    if (position.x < 0 || position.x  > 800) { // Assuming screen width is 800
         patrolDirection.x *= -1; // Reverse direction
     }
     if (position.y < 0 || position.y > 600) { // Assuming screen height is 600

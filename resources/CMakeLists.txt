@@ -21,3 +21,4 @@ configure_file("10_ending_theme.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 # Copy text file
 configure_file("Toolbox.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("level1.txt" ${CMAKE_BINARY_DIR} COPYONLY)
