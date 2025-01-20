@@ -11,8 +11,6 @@ ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives
     if (!inputFile.is_open()) {
         throw std::runtime_error("Failed to open level file: " + levelFilePath);
     }
-
-    // Initialize the board and objects
     initBoard(inputFile);
 }
 
@@ -21,24 +19,24 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
     int row = 0;
 
     while (std::getline(inputFile, line)) {
-        m_board.push_back(std::vector<std::unique_ptr<StaticObject>>());
+        //m_board.push_back(std::vector<std::unique_ptr<StaticObject>>());
         for (int col = 0; col < line.size(); ++col) {
 char tile = line[col];
             switch (tile) {
             case '#': // Wall
-                m_board[row].push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));//eljfhjkergruegtuoreu
+                m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));//eljfhjkergruegtuoreu
                 break;
             case '/': // Player
-                m_board[row].push_back(nullptr); // No static object
+                //m_board[row].push_back(nullptr); // No static object
                 player = std::make_unique<Player>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100));
                 break;
             case '!': // Enemy (Guard)
-                m_board[row].push_back(nullptr); // No static object
+                //m_board[row].push_back(nullptr); // No static object
                 guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
                 break;            
             case ' ': // Empty space
             default:
-                m_board[row].push_back(nullptr);
+                //m_board[row].push_back(nullptr);
                 break;
             }
         }
@@ -69,13 +67,16 @@ void ObjectManager::update(float deltaTime) {
 
 void ObjectManager::render(sf::RenderWindow& window) {
     // Render static objects
-    for (const auto& row : m_board) {
+    for (const auto& obj : m_board) 
+            if (obj) 
+                obj->render(window);
+    /*    for (const auto& row : m_board) {
         for (const auto& obj : row) {
             if (obj) {
                 obj->render(window);
             }
         }
-    }
+    }*/
 
     // Render player
     if (player) {

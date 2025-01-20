@@ -10,7 +10,8 @@
 
 class ObjectManager {
 private:
-    std::vector<std::vector<std::unique_ptr<StaticObject>>> m_board; // Static objects
+    std::vector<std::unique_ptr<StaticObject>> m_board; // Static objects
+    //std::vector<std::vector<std::unique_ptr<StaticObject>>> m_board; // Static objects
     std::vector<std::unique_ptr<Guard>> guards;                      // Enemies
     std::vector<std::unique_ptr<Bomb>> bombs;                        // Bombs
     std::unique_ptr<Player> player;                                  // Single player
@@ -22,6 +23,7 @@ private:
 
 public:
     ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore);
+   // ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore );
 
     void addBomb(sf::Vector2f position, float timer, float radius);
     void update(float deltaTime);
