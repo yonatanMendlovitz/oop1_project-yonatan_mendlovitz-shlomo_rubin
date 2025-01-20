@@ -12,10 +12,10 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Movable Object Example");
     sf::Sound sound = sf::Sound();//);
-    sound.setBuffer(*ResourceManager::Sounds.getSound('1'));
+    sound.setBuffer(ResourceManager::getInstance().getSound("01_main_menu.wav"));
     sound.setLoop(true);
   
-    Player player(sf::Vector2f{ 0, 0 }, sf::Vector2f{100,100 }, ResourceManager::Textures.getTexture('/'));
+    Player player(sf::Vector2f{ 0, 0 }, sf::Vector2f{100,100 }, ResourceManager::getInstance().getTexture("player.png"));
     player.setDirection({ 1, 1 });
     player.setVelocity(100); 
     sf::Clock clock;
@@ -34,6 +34,7 @@ int main()
             player.setDirection({ -1 * player.getDirection().x, player.getDirection().y });
        player.update(deltaTime);
         window.clear();
+        window.draw(sf::Sprite(ResourceManager::getInstance().getTexture("gameImage.jpeg")));
         player.render(window);
         window.display();
     }

@@ -1,7 +1,7 @@
 // StaticObject.cpp
 #include "StaticObject.h"
 
-StaticObject::StaticObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture)
+StaticObject::StaticObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
     : GameObject(pos, size, texture) {
 }
 

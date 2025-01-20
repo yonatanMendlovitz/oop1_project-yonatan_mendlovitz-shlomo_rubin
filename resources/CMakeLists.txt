@@ -5,6 +5,7 @@ configure_file("stone.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("blank.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("door.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file("bomb.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("gameImage.jpeg" ${CMAKE_BINARY_DIR} COPYONLY)
 
 # Copy sound files

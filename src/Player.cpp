@@ -7,12 +7,12 @@
 //    return sf::Vector2f(vector.x * scalar, vector.y * scalar);
 //}
 
-Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture)
+Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
     : MovableObject(pos, size, texture), lives(3), score(0) {
 }
 
 Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size) :
-    Player(pos, size, ResourceManager::Textures.getTexture('#')) {
+    Player(pos, size, ResourceManager::getInstance().getTexture("player.png")) {
 }
 
 void Player::update(float deltaTime) {

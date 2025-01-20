@@ -9,7 +9,7 @@ protected:
     sf::Vector2f direction; // Direction of movement (normalized vector)
 
 public:
-    MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture);
+    MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture);
     MovableObject(const MovableObject& other); // Copy constructor
     MovableObject& operator=(const MovableObject& other); // Copy assignment operator
     virtual ~MovableObject() = default;

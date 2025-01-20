@@ -4,9 +4,9 @@
 //    position(pos), size(size), 
 //    sprite(sf::Sprite(*texture,sf::IntRect(sf::Vector2i(position), sf::Vector2i(size))))  {
 //}
-GameObject::GameObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture* texture)
+GameObject::GameObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
     : position(pos), size(size) {
-    sprite.setTexture(*texture);
+    sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(
         static_cast<sf::Vector2i>(sf::Vector2f(position.x, position.y)),
         static_cast<sf::Vector2i>(sf::Vector2f(size.x, size.y))

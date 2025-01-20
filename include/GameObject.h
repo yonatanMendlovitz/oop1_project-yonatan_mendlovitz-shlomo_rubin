@@ -11,7 +11,7 @@ protected:
     sf::Sprite sprite;
 
 public:
-    GameObject(const sf::Vector2f& pos, const sf::Vector2f& size,const sf::Texture* texture);
+    GameObject(const sf::Vector2f& pos, const sf::Vector2f& size,const sf::Texture& texture);
     GameObject(const GameObject& other); // Copy constructor
     GameObject& operator=(const GameObject& other); // Copy assignment operator
     virtual ~GameObject() = default;
