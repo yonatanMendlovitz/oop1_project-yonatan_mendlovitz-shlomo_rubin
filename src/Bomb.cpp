@@ -25,10 +25,6 @@ void Bomb::update(float deltaTime) {
     }
 }
 
-void Bomb::onPlayerCollision() {
-    // Interaction logic if needed
-}
-
 bool Bomb::isExploded() const {
     return timer <= 0;
 }

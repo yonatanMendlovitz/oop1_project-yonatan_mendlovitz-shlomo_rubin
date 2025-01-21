@@ -10,26 +10,24 @@
 
 class ObjectManager {
 private:
-    std::vector<std::unique_ptr<StaticObject>> m_board; // Static objects
-    //std::vector<std::vector<std::unique_ptr<StaticObject>>> m_board; // Static objects
-    std::vector<std::unique_ptr<Guard>> guards;                      // Enemies
-    std::vector<std::unique_ptr<Bomb>> bombs;                        // Bombs
-    std::unique_ptr<Player> player;                                  // Single player
+    Player* player; // Raw pointer to the player (not owning)
+    std::vector<std::unique_ptr<StaticObject>> m_board;
+    std::vector<std::unique_ptr<Guard>> guards;
+    std::vector<std::unique_ptr<Bomb>> bombs;
 
     int lives;
     int score;
 
     void initBoard(std::ifstream& inputFile);
-
+    void checkCollisions(MovableObject& movable);
 public:
-    ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore);
-   // ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore );
+    ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore, Player* player);
 
     void addBomb(sf::Vector2f position, float timer, float radius);
     void update(float deltaTime);
     void render(sf::RenderWindow& window);
 
-    Player* getPlayer() const;
+    //Player* getPlayer() const;
     const std::vector<std::unique_ptr<Guard>>& getGuards() const;
     const std::vector<std::unique_ptr<Bomb>>& getBombs() const;
 

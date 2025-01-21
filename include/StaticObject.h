@@ -10,8 +10,8 @@ public:
     StaticObject(const StaticObject& other); // Copy constructor
     StaticObject& operator=(const StaticObject& other); // Copy assignment operator
     virtual ~StaticObject() = default;
-
-    virtual void onPlayerCollision() = 0;
+    sf::FloatRect getBounds() const override;
+    //virtual void onPlayerCollision() = 0;
 };
 
 #endif // STATIC_OBJECT_H

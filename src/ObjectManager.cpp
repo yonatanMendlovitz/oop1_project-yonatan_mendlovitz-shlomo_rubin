@@ -5,8 +5,8 @@
 #include <sstream>
 #include <iostream>
 
-ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore)
-    : lives(startingLives), score(startingScore) {
+ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore, Player* player)
+    : lives(startingLives), score(startingScore), player(player) {
     std::ifstream inputFile(levelFilePath);
     if (!inputFile.is_open()) {
         throw std::runtime_error("Failed to open level file: " + levelFilePath);
@@ -19,24 +19,28 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
     int row = 0;
 
     while (std::getline(inputFile, line)) {
-        //m_board.push_back(std::vector<std::unique_ptr<StaticObject>>());
         for (int col = 0; col < line.size(); ++col) {
-char tile = line[col];
+            char tile = line[col];
             switch (tile) {
             case '#': // Wall
-                m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));//eljfhjkergruegtuoreu
+                m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
                 break;
+
             case '/': // Player
-                //m_board[row].push_back(nullptr); // No static object
-                player = std::make_unique<Player>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100));
+                player->setPosition(sf::Vector2f(col * 100, row * 100));
+                player->setSize(sf::Vector2f(100, 100));
+                player->setDirection(sf::Vector2f(1, 0));
+                player->setVelocity(180);
                 break;
+
             case '!': // Enemy (Guard)
-                //m_board[row].push_back(nullptr); // No static object
                 guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
-                break;            
+                guards.back()->setDirection(sf::Vector2f(0, 1));
+                guards.back()->setVelocity(120);
+                break;
+
             case ' ': // Empty space
             default:
-                //m_board[row].push_back(nullptr);
                 break;
             }
         }
@@ -45,21 +49,23 @@ char tile = line[col];
 }
 
 void ObjectManager::addBomb(sf::Vector2f position, float timer, float radius) {
-    bombs.push_back(std::make_unique<Bomb>(position, sf::Vector2f(100, 100)));
+    // Implement logic to add bombs if needed
 }
 
 void ObjectManager::update(float deltaTime) {
-    // Update the player
+    // Update player and check collisions
     if (player) {
         player->update(deltaTime);
+        checkCollisions(*player);
     }
 
-    // Update guards
+    // Update guards and check collisions
     for (auto& guard : guards) {
         guard->update(deltaTime);
+        checkCollisions(*guard);
     }
 
-    // Update bombs
+    // Update bombs (if any additional behavior is needed)
     for (auto& bomb : bombs) {
         bomb->update(deltaTime);
     }
@@ -67,16 +73,11 @@ void ObjectManager::update(float deltaTime) {
 
 void ObjectManager::render(sf::RenderWindow& window) {
     // Render static objects
-    for (const auto& obj : m_board) 
-            if (obj) 
-                obj->render(window);
-    /*    for (const auto& row : m_board) {
-        for (const auto& obj : row) {
-            if (obj) {
-                obj->render(window);
-            }
+    for (const auto& obj : m_board) {
+        if (obj) {
+            obj->render(window);
         }
-    }*/
+    }
 
     // Render player
     if (player) {
@@ -94,8 +95,13 @@ void ObjectManager::render(sf::RenderWindow& window) {
     }
 }
 
-Player* ObjectManager::getPlayer() const {
-    return player.get();
+void ObjectManager::checkCollisions(MovableObject& movable) {
+    for (const auto& staticObj : m_board) {
+        if (staticObj && movable.getBounds().intersects(staticObj->getBounds())) {
+            // Handle collision based on the type of the static object
+            movable.handleCollision(*staticObj);
+        }
+    }
 }
 
 const std::vector<std::unique_ptr<Guard>>& ObjectManager::getGuards() const {
@@ -121,4 +127,3 @@ void ObjectManager::addScore(int points) {
 void ObjectManager::loseLife() {
     --lives;
 }
-

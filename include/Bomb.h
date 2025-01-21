@@ -8,15 +8,19 @@
 
 class Bomb : public StaticObject {
 private:
-    float timer;
+	float timer;
 
 public:
-    Bomb(const sf::Vector2f& pos, const sf::Vector2f& size); // loat timer, float radius, const sf::Texture& texture);
-    Bomb(const Bomb& other); // Copy constructor
-    Bomb& operator=(const Bomb& other); // Copy assignment operator
-    void update(float deltaTime);
-    void onPlayerCollision() override;
-    bool isExploded() const;
+	Bomb(const sf::Vector2f& pos, const sf::Vector2f& size); // loat timer, float radius, const sf::Texture& texture);
+	Bomb(const Bomb& other); // Copy constructor
+	Bomb& operator=(const Bomb& other); // Copy assignment operator
+	void update(float deltaTime);
+	//void onPlayerCollision() override;
+	bool isExploded() const;
+	/*void handleCollision(GameObject& gameObject) override { gameObject.handleCollision(*this); };
+	void handleCollision(Guard& guard)override { guard.handleCollision(*this); };
+	void handleCollision(Wall& wall) override {};
+	void handleCollision(Player& player) override { player.handleCollision(*this); };*/
 };
 
 #endif // BOMB_H

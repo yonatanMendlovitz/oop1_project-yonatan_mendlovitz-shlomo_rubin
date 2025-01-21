@@ -9,37 +9,59 @@
 #include "Bomb.h"
 
 int main() {
-    // יצירת חלון SFML
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Game Level 1");
-    Player player(sf::Vector2f(0,0), sf::Vector2f(100, 100));
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Game Level 1");
 
-    try {
-        ObjectManager manager("level1.txt", 3, 0); 
+	Player player(sf::Vector2f(0, 0), sf::Vector2f(100, 100));
 
-        sf::Clock clock;
-        while (window.isOpen()) {
-            sf::Event event;
-            while (window.pollEvent(event)) {
-                if (event.type == sf::Event::Closed) {
-                    window.close();
-                }
-            }
-            float deltaTime = clock.restart().asSeconds();
+	try {
+		// יצירת מנהל האובייקטים
+		ObjectManager manager("level1.txt", 3, 0, &player);
 
-            // עדכון האובייקטים
-            manager.update(deltaTime);
+		// שעון SFML למדידת זמן בין פריימים
+		sf::Clock clock;
 
-            // רינדור האובייקטים
-            window.clear();
-            manager.render(window);
-            window.display();
-        }
+		while (window.isOpen()) {
+			// טיפול באירועים
+			sf::Event event;
+			while (window.pollEvent(event)) {
+				if (event.type == sf::Event::Closed) {
+					window.close();
+				}
+				if (event.type == sf::Event::KeyPressed) {
+					switch (event.key.code) {
+					case sf::Keyboard::Escape:
+						window.close();
+						break;
+					case sf::Keyboard::Up:
+						player.setDirection(sf::Vector2f(0,-1));
+						break;
+					case sf::Keyboard::Down:
+						player.setDirection(sf::Vector2f(0, 1));
+						break;
+					case sf::Keyboard::Left:
+						player.setDirection(sf::Vector2f(-1, 0));
+						break;
+					case sf::Keyboard::Right:
+						player.setDirection(sf::Vector2f(1, 0));
+						break;
+					default:
+						break;
+					}
+				}
+			}
 
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return -1;
-    }
+				float deltaTime = clock.restart().asSeconds();
+				manager.update(deltaTime);
 
-    return 0;
+				window.clear();
+				manager.render(window);
+				window.display();
+			}
+		}
+	catch (const std::exception& e) {
+		std::cerr << "Error: " << e.what() << std::endl;
+		return -1;
+	}
+
+	return 0;
 }
