@@ -15,6 +15,7 @@ public:
 	void handleCollision(Guard& guard)override;
 	void handleCollision(Wall& wall) override;
 	void handleCollision(Player& player) override;
+	void handleCollision(Stone& stone) override;
 	sf::FloatRect getBounds() const override { return m_sprite.getGlobalBounds(); }//xyz
 
 	void update(float deltaTime) override;

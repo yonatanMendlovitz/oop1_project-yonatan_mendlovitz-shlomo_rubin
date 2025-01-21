@@ -23,7 +23,7 @@ private:
             {'!', "guard.png"},      // Guard texture
             {'@', "stone.png"},      // Stone texture
             {'D', "door.png"},       // Door texture
-            //{'!', "explosion.png"},  // Explosion texture
+            //{'!', "explosion.png"},  // Explosion texture//xyz
             {' ', "blank.png"}       // Default empty texture
         };
     }

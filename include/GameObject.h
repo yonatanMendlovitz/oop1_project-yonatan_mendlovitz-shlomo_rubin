@@ -9,7 +9,7 @@ class Guard;
 class Wall;
 class Player;
 class Bomb;
-//class Stone;
+class Stone;
 //class gift;
 
 class GameObject {
@@ -36,6 +36,7 @@ public:
 	virtual void handleCollision(Guard& ) = 0;
 	virtual void handleCollision(Wall&) = 0;
 	virtual void handleCollision(Player&) = 0;
+	virtual void handleCollision(Stone&) = 0;
 	//virtual void handleCollision(Bomb&) = 0;
 	//xyz
 };

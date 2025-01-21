@@ -12,6 +12,10 @@ ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives
         throw std::runtime_error("Failed to open level file: " + levelFilePath);
     }
     initBoard(inputFile);
+
+    gameBoard.setTexture(&ResourceManager::getInstance().getTexture("gameImage.jpeg"));
+    gameBoard.setSize(sf::Vector2f(600, 400)); // Initial size
+    gameBoard.setPosition(100, 100);          // Centered in the window
 }
 
 void ObjectManager::initBoard(std::ifstream& inputFile) {
@@ -24,6 +28,9 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
             switch (tile) {
             case '#': // Wall
                 m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
+                break;
+            case '@':
+                m_board.push_back(std::make_unique<Stone>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
                 break;
 
             case '/': // Player
@@ -72,6 +79,9 @@ void ObjectManager::update(float deltaTime) {
 }
 
 void ObjectManager::render(sf::RenderWindow& window) {
+    // Render the game board
+    window.draw(gameBoard);
+
     // Render static objects
     for (const auto& obj : m_board) {
         if (obj) {
@@ -102,6 +112,12 @@ void ObjectManager::checkCollisions(MovableObject& movable) {
             movable.handleCollision(*staticObj);
         }
     }
+}
+
+void ObjectManager::handleWindowResize(const sf::Vector2u& newSize) {
+    // Adjust the game board size and position to match the new window size
+    gameBoard.setSize(sf::Vector2f(newSize.x * 0.75f, newSize.y * 0.75f)); // 75% of window size
+    gameBoard.setPosition(newSize.x * 0.125f, newSize.y * 0.125f);         // Center the board
 }
 
 const std::vector<std::unique_ptr<Guard>>& ObjectManager::getGuards() const {

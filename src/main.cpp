@@ -33,7 +33,7 @@ int main() {
 						window.close();
 						break;
 					case sf::Keyboard::Up:
-						player.setDirection(sf::Vector2f(0,-1));
+						player.setDirection(sf::Vector2f(0, -1));
 						break;
 					case sf::Keyboard::Down:
 						player.setDirection(sf::Vector2f(0, 1));
@@ -48,16 +48,20 @@ int main() {
 						break;
 					}
 				}
+				if (event.type == sf::Event::Resized) {
+					manager.handleWindowResize(window.getSize());
+				}
+
 			}
 
-				float deltaTime = clock.restart().asSeconds();
-				manager.update(deltaTime);
+			float deltaTime = clock.restart().asSeconds();
+			manager.update(deltaTime);
 
-				window.clear();
-				manager.render(window);
-				window.display();
-			}
+			window.clear(sf::Color::Magenta);
+			manager.render(window);
+			window.display();
 		}
+	}
 	catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << std::endl;
 		return -1;

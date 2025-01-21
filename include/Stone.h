@@ -3,20 +3,20 @@
 
 class GameObject;
 class Guard;
-//class Wall;
+//class Stone;
 class Player;
 class Bomb;
 
-class Wall : public StaticObject {
+class Stone : public StaticObject {
 public:
-	Wall(const sf::Vector2f& position, const sf::Vector2f& size);
+    Stone(const sf::Vector2f& position, const sf::Vector2f& size);
 
-	// Implement required function for player collision
-	//void onPlayerCollision() override;
+    // Implement required function for player collision
+    //void onPlayerCollision() override;
     void handleCollision(GameObject& gameObject) override;
     void handleCollision(Guard& guard)override;
     void handleCollision(Wall& wall) override;
-    void handleCollision(Stone& stone) override ;
+    void handleCollision(Stone& stone) override;
     void handleCollision(Player& player) override;
 
 };

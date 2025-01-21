@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "MovableObject.h"
+#include "Stone.h"
 
 class Player : public MovableObject {
 private:
@@ -18,10 +19,12 @@ public:
 	int getLives() const;
 	//void youShallNotPass() override;
 
-	void handleCollision(GameObject& gameObject) { gameObject.handleCollision(*this); }
+	virtual void  handleCollision(GameObject& gameObject) { gameObject.handleCollision(*this); }
 	virtual void handleCollision(Guard& guard) { std::cout << "player is dead :(\n"; };
 	virtual void handleCollision(Wall& wall) { direction = sf::Vector2f(0, 0); };
 	virtual void handleCollision(Player&) {};
+	virtual void handleCollision(Stone& stone) { direction = sf::Vector2f(0, 0); };
+	
 
 };
 
