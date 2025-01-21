@@ -2,7 +2,7 @@
 #define MOVABLE_OBJECT_H
 
 #include "GameObject.h"
-
+class StaticObject;
 class MovableObject : public GameObject {
 protected:
 	float velocity;   // Speed of the object
@@ -15,7 +15,7 @@ public:
 	MovableObject(const MovableObject& other); // Copy constructor
 	MovableObject& operator=(const MovableObject& other); // Copy assignment operator
 	virtual ~MovableObject() = default;
-
+	void separateFromStatic(const StaticObject& staticObject);
 	//virtual void update(float deltaTime) = 0;
 	//virtual void onCollision(GameObject& other) = 0;
 	sf::FloatRect getBounds() const override;

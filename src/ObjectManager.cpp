@@ -14,8 +14,8 @@ ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives
     initBoard(inputFile);
 
     gameBoard.setTexture(&ResourceManager::getInstance().getTexture("gameImage.jpeg"));
-    gameBoard.setSize(sf::Vector2f(600, 400)); // Initial size
-    gameBoard.setPosition(100, 100);          // Centered in the window
+    gameBoard.setSize(sf::Vector2f(800, 600)); // Initial size
+    gameBoard.setPosition(0, 0);          // Centered in the window
 }
 
 void ObjectManager::initBoard(std::ifstream& inputFile) {
@@ -108,16 +108,17 @@ void ObjectManager::render(sf::RenderWindow& window) {
 void ObjectManager::checkCollisions(MovableObject& movable) {
     for (const auto& staticObj : m_board) {
         if (staticObj && movable.getBounds().intersects(staticObj->getBounds())) {
-            // Handle collision based on the type of the static object
             movable.handleCollision(*staticObj);
         }
     }
 }
 
 void ObjectManager::handleWindowResize(const sf::Vector2u& newSize) {
-    // Adjust the game board size and position to match the new window size
-    gameBoard.setSize(sf::Vector2f(newSize.x * 0.75f, newSize.y * 0.75f)); // 75% of window size
-    gameBoard.setPosition(newSize.x * 0.125f, newSize.y * 0.125f);         // Center the board
+    //gameBoard.setSize(sf::Vector2f(newSize.x * 0.75f, newSize.y * 0.75f)); // 75% of window size
+    //gameBoard.setPosition(newSize.x * 0.125f, newSize.y * 0.125f);         // Center the board
+    gameBoard.setSize(sf::Vector2f(newSize.x , newSize.y )); // 75% of window size
+    gameBoard.setPosition(0,0);         // Center the board
+
 }
 
 const std::vector<std::unique_ptr<Guard>>& ObjectManager::getGuards() const {

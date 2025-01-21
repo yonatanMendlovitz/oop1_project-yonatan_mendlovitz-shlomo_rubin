@@ -38,6 +38,4 @@ void Player::update(float deltaTime) {
 	}
 	direction = sf::Vector2f(0, 0);
 }
-//void Player::youShallNotPass() {
-//
-//}
+

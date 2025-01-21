@@ -33,6 +33,7 @@ void Guard::update(float deltaTime) {
 
 void Guard::handleCollision(GameObject& gameObject) { gameObject.handleCollision(*this); };
 void Guard::handleCollision(Guard& guard) {};
-void Guard::handleCollision(Wall& wall) { setDirection(sf::Vector2f(-1 * direction.x, -1 * direction.y)); std::cout << "X\n"; };
+void Guard::handleCollision(Wall& wall) { separateFromStatic(wall);  setDirection(sf::Vector2f(-1 * direction.x, -1 * direction.y)); };
 void Guard::handleCollision(Player& player) { player.handleCollision(*this); }
-void Guard::handleCollision(Stone& stone) { setDirection(sf::Vector2f(-1 * direction.x, -1 * direction.y)); std::cout << "X\n"; }
+void Guard::handleCollision(Stone& stone) { separateFromStatic(stone); setDirection(sf::Vector2f(-1 * direction.x, -1 * direction.y));};
+ 
