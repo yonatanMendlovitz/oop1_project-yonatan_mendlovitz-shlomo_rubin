@@ -3,10 +3,10 @@
 
 #include "GameObject.h"
 class StaticObject;
+
 class MovableObject : public GameObject {
 protected:
-	float velocity;   // Speed of the object
-	//float maxVelocity = 300;  // xyz
+	float velocity;   
 	sf::Vector2f direction; // Direction of movement (normalized vector)
 	
 
@@ -16,8 +16,6 @@ public:
 	MovableObject& operator=(const MovableObject& other); // Copy assignment operator
 	virtual ~MovableObject() = default;
 	void separateFromStatic(const StaticObject& staticObject);
-	//virtual void update(float deltaTime) = 0;
-	//virtual void onCollision(GameObject& other) = 0;
 	sf::FloatRect getBounds() const override;
 	sf::Vector2f getDirection() const;
 	void setDirection(const sf::Vector2f& newDirection);

@@ -12,12 +12,11 @@
 
 class ObjectManager {
 private:
-    std::vector<std::unique_ptr<StaticObject>> m_board; // Static objects
-    std::vector<std::unique_ptr<Guard>> guards;         // Enemies
-    std::vector<std::unique_ptr<Bomb>> bombs;           // Bombs
-    Player* player;                                     // Single player
-
-    sf::RectangleShape gameBoard;                       // Game board rectangle
+    std::vector<std::unique_ptr<StaticObject>> m_board;
+    std::vector<std::unique_ptr<Guard>> guards;        
+    std::vector<std::unique_ptr<Bomb>> bombs;          
+    Player* player;                                    
+    sf::RectangleShape gameBoard;                      
 
     int lives;
     int score;

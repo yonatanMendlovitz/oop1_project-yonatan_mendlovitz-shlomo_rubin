@@ -14,8 +14,8 @@ ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives
     initBoard(inputFile);
 
     gameBoard.setTexture(&ResourceManager::getInstance().getTexture("gameImage.jpeg"));
-    gameBoard.setSize(sf::Vector2f(800, 600)); // Initial size
-    gameBoard.setPosition(0, 0);          // Centered in the window
+    gameBoard.setSize(sf::Vector2f(600, 400)); // Initial size
+    gameBoard.setPosition(100, 100);          // Centered in the window
 }
 
 void ObjectManager::initBoard(std::ifstream& inputFile) {
@@ -42,7 +42,7 @@ void ObjectManager::initBoard(std::ifstream& inputFile) {
 
             case '!': // Enemy (Guard)
                 guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
-                guards.back()->setDirection(sf::Vector2f(0, 1));
+                guards.back()->setDirection(sf::Vector2f(1, 1));
                 guards.back()->setVelocity(120);
                 break;
 
@@ -60,46 +60,33 @@ void ObjectManager::addBomb(sf::Vector2f position, float timer, float radius) {
 }
 
 void ObjectManager::update(float deltaTime) {
-    // Update player and check collisions
     if (player) {
         player->update(deltaTime);
         checkCollisions(*player);
     }
-
-    // Update guards and check collisions
     for (auto& guard : guards) {
         guard->update(deltaTime);
         checkCollisions(*guard);
     }
-
-    // Update bombs (if any additional behavior is needed)
     for (auto& bomb : bombs) {
-        bomb->update(deltaTime);
+        bomb->update(deltaTime);//xyz
     }
 }
 
 void ObjectManager::render(sf::RenderWindow& window) {
-    // Render the game board
     window.draw(gameBoard);
-
-    // Render static objects
     for (const auto& obj : m_board) {
         if (obj) {
             obj->render(window);
         }
     }
 
-    // Render player
     if (player) {
         player->render(window);
     }
-
-    // Render guards
     for (const auto& guard : guards) {
         guard->render(window);
     }
-
-    // Render bombs
     for (const auto& bomb : bombs) {
         bomb->render(window);
     }
@@ -114,11 +101,10 @@ void ObjectManager::checkCollisions(MovableObject& movable) {
 }
 
 void ObjectManager::handleWindowResize(const sf::Vector2u& newSize) {
-    //gameBoard.setSize(sf::Vector2f(newSize.x * 0.75f, newSize.y * 0.75f)); // 75% of window size
-    //gameBoard.setPosition(newSize.x * 0.125f, newSize.y * 0.125f);         // Center the board
-    gameBoard.setSize(sf::Vector2f(newSize.x , newSize.y )); // 75% of window size
-    gameBoard.setPosition(0,0);         // Center the board
-
+    gameBoard.setSize(sf::Vector2f(newSize.x * 0.75f, newSize.y * 0.75f)); // 75% of window size
+    gameBoard.setPosition(newSize.x * 0.125f, newSize.y * 0.125f);         // Center the board
+    //gameBoard.setSize(sf::Vector2f(newSize.x , newSize.y )); // 75% of window size
+    //gameBoard.setPosition(0,0);         // Center the board
 }
 
 const std::vector<std::unique_ptr<Guard>>& ObjectManager::getGuards() const {

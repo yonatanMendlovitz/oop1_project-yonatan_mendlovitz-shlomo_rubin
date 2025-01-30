@@ -4,7 +4,6 @@
 
 #include"ResourceManager.h"
 
-class GameObject;
 class Guard;
 class Wall;
 class Player;

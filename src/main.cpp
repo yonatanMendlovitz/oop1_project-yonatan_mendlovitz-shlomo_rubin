@@ -14,14 +14,9 @@ int main() {
 	Player player(sf::Vector2f(0, 0), sf::Vector2f(100, 100));
 
 	try {
-		// יצירת מנהל האובייקטים
 		ObjectManager manager("level1.txt", 3, 0, &player);
-
-		// שעון SFML למדידת זמן בין פריימים
 		sf::Clock clock;
-
 		while (window.isOpen()) {
-			// טיפול באירועים
 			sf::Event event;
 			while (window.pollEvent(event)) {
 				if (event.type == sf::Event::Closed) {
@@ -51,12 +46,9 @@ int main() {
 				if (event.type == sf::Event::Resized) {
 					manager.handleWindowResize(window.getSize());
 				}
-
 			}
-
 			float deltaTime = clock.restart().asSeconds();
 			manager.update(deltaTime);
-
 			window.clear(sf::Color::Magenta);
 			manager.render(window);
 			window.display();

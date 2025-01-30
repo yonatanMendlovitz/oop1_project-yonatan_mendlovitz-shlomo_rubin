@@ -12,13 +12,8 @@ Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size) :
 }
 
 
-//void Player::onCollision(GameObject& other) {
-//
-//}
-
 void Player::onExplosionEffect() {
 	lives--;
-	//std::cout << "Player hit by explosion! Lives left: " << lives << "\n"; xyz
 }
 
 void Player::addScore(int points) {
