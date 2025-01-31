@@ -15,33 +15,33 @@ ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives
 
     gameBoard.setTexture(&ResourceManager::getInstance().getTexture("gameImage.jpeg"));
     gameBoard.setSize(sf::Vector2f(600, 400)); // Initial size
-    gameBoard.setPosition(100, 100);          // Centered in the window
+    gameBoard.setPosition(100.0f, 100.0f);          // Centered in the window
 }
 
 void ObjectManager::initBoard(std::ifstream& inputFile) {
     std::string line;
-    int row = 0;
+    float row = 0;
 
     while (std::getline(inputFile, line)) {
-        for (int col = 0; col < line.size(); ++col) {
+        for (float col = 0; col < line.size(); ++col) {
             char tile = line[col];
             switch (tile) {
             case '#': // Wall
-                m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
+                m_board.push_back(std::make_unique<Wall>(sf::Vector2f(col * 100.0f, row * 100.0f), sf::Vector2f(100.0f, 100.0f)));
                 break;
             case '@':
-                m_board.push_back(std::make_unique<Stone>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
+                m_board.push_back(std::make_unique<Stone>(sf::Vector2f(col * 100.0f, row * 100.0f), sf::Vector2f(100.0f, 100.0f)));
                 break;
 
             case '/': // Player
-                player->setPosition(sf::Vector2f(col * 100, row * 100));
-                player->setSize(sf::Vector2f(100, 100));
+                player->setPosition(sf::Vector2f(col * 100.0f, row * 100.0f));
+                player->setSize(sf::Vector2f(100.0f, 100.0f));
                 player->setDirection(sf::Vector2f(1, 0));
                 player->setVelocity(180);
                 break;
 
             case '!': // Enemy (Guard)
-                guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100, row * 100), sf::Vector2f(100, 100)));
+                guards.push_back(std::make_unique<Guard>(sf::Vector2f(col * 100.0f, row * 100.0f), sf::Vector2f(100.0f, 100.0f)));
                 guards.back()->setDirection(sf::Vector2f(1, 1));
                 guards.back()->setVelocity(120);
                 break;
@@ -65,7 +65,7 @@ void ObjectManager::update(float deltaTime) {
         checkCollisions(*player);
     }
     for (auto& guard : guards) {
-        guard->update(deltaTime);
+        guard->update(deltaTime );
         checkCollisions(*guard);
     }
     for (auto& bomb : bombs) {

@@ -1,36 +1,42 @@
+﻿//
+
 #include "Player.h"
-
-
+#include <SFML/Window/Keyboard.hpp>
 
 Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
-	: MovableObject(pos, size, texture), lives(3), score(0) {
-	velocity = 100.0f;
+    : MovableObject(pos, size, texture), lives(3), score(0) {
+    velocity = baseSpeed;
 }
 
-Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size) :
-	Player(pos, size, ResourceManager::getInstance().getTexture("player.png")) {
-}
-
-
-void Player::onExplosionEffect() {
-	lives--;
-}
-
-void Player::addScore(int points) {
-	score += points;
-}
-
-int Player::getLives() const {
-	return lives;
+Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size)
+    : MovableObject(pos, size, ResourceManager::getInstance().getTexture("player.png")), lives(3), score(0) {
+    velocity = baseSpeed;
 }
 
 void Player::update(float deltaTime) {
-	sf::Vector2f newPosition = m_position + (velocity * direction * deltaTime);
-	if (newPosition.x > 0 && newPosition.x + m_size.x < 800 && newPosition.y > 0 && newPosition.y + m_size.y < 600)//xyz
-	{
-		setPosition(newPosition);
-		return;
-	}
-	direction = sf::Vector2f(0, 0);
+    handleInput(); // Process input before updating position
+    m_position += direction * velocity * deltaTime;
+    updateSprite();
 }
 
+// 🕹️ Handles keyboard input
+void Player::handleInput() {
+    sf::Vector2f newDirection = sf::Vector2f(0, 0);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        newDirection = UP;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        newDirection = DOWN;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        newDirection = LEFT;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        newDirection = RIGHT;
+
+    //Increase speed if moving in the same direction
+    if (newDirection == direction)//xyz
+        velocity += 1;
+    else {
+        velocity = baseSpeed; 
+        direction = newDirection;
+    }
+}

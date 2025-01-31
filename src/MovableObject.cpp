@@ -41,7 +41,7 @@ void MovableObject::separateFromStatic(const StaticObject& staticObject) {
 }
 
 MovableObject::MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture)
-	: GameObject(pos, size, texture), velocity(0), direction(0, 0) {
+	: GameObject(pos, size, texture), velocity(0), direction(0, 0), initialPosition(pos) {
 }
 
 MovableObject::MovableObject(const MovableObject& other)
@@ -77,4 +77,9 @@ sf::FloatRect MovableObject::getBounds() const {
 float MovableObject::getVelocity() const {
 	std::cout << velocity << '\n';//xyz
 	return velocity;
+}
+
+bool MovableObject::anIAlive()
+{
+    return iAmAlive;
 }

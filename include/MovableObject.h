@@ -6,9 +6,11 @@ class StaticObject;
 
 class MovableObject : public GameObject {
 protected:
-	float velocity;   
+	bool iAmAlive = true;
+	sf::Vector2f initialPosition;
+	float velocity;
 	sf::Vector2f direction; // Direction of movement (normalized vector)
-	
+
 
 public:
 	MovableObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture);
@@ -22,7 +24,8 @@ public:
 	void setVelocity(float newVelocity);
 	float getVelocity() const;
 	virtual void update(float deltaTime) = 0;
-	/*virtual void youShallNotPass() = 0;*/
+	bool anIAlive();
+	virtual void die() = 0;// { iAmAlive = false; };
 };
 
 #endif // MOVABLE_OBJECT_H
