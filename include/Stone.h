@@ -13,6 +13,8 @@ public:
 
     // Implement required function for player collision
     //void onPlayerCollision() override;
+    void onExplosion() override { destroy(); } // סלע נהרס בפיצוץ
+
     void handleCollision(GameObject& gameObject) override;
     void handleCollision(Guard& guard)override;
     void handleCollision(Wall& wall) override;

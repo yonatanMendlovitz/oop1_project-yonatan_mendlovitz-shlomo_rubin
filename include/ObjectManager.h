@@ -28,7 +28,7 @@ public:
     ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore, Player* player);
     void addBomb(sf::Vector2f position, float timer, float radius);
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    //void render(sf::RenderWindow& window);
     void handleWindowResize(const sf::Vector2u& newSize);
     const std::vector<std::unique_ptr<Guard>>& getGuards() const;
     const std::vector<std::unique_ptr<Bomb>>& getBombs() const;

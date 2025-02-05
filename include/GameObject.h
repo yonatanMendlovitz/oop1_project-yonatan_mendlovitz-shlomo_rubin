@@ -1,4 +1,3 @@
-// GameObject.h
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
@@ -16,9 +15,10 @@ protected:
 	sf::Vector2f m_position;
 	sf::Vector2f m_size;
 	sf::Sprite m_sprite;
+	bool isActive = true; 
 	void updateSprite();
+
 public:
-	
 	GameObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture);
 	GameObject(const GameObject& other); // Copy constructor
 	GameObject& operator=(const GameObject& other); // Copy assignment operator
@@ -31,15 +31,17 @@ public:
 	void setSize(const sf::Vector2f& size);
 	virtual sf::FloatRect getBounds() const = 0;
 
+	bool isAlive() const { return isActive; } // בודק אם האובייקט קיים
+	void destroy() { isActive = false; } // מסמן את האובייקט כנהרס
+	virtual void onExplosion() { /* ברירת מחדל: לא קורה כלום */ }
 	virtual void handleCollision(GameObject&) = 0;
-	virtual void handleCollision(Guard& ) = 0;
+	virtual void handleCollision(Guard&) = 0;
 	virtual void handleCollision(Wall&) = 0;
 	virtual void handleCollision(Player&) = 0;
 	virtual void handleCollision(Stone&) = 0;
+	virtual void handleCollision(Bomb&) {};
 	//virtual void handleCollision(Bomb&) = 0;
 	//xyz
 };
 
-
 #endif // GAME_OBJECT_H
-

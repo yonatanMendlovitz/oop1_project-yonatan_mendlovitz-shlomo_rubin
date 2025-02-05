@@ -3,7 +3,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <sstream>
-#include <iostream>
+//#include <iostream>
 
 ObjectManager::ObjectManager(const std::string& levelFilePath, int startingLives, int startingScore, Player* player)
     : lives(startingLives), score(startingScore), player(player) {
@@ -73,24 +73,24 @@ void ObjectManager::update(float deltaTime) {
     }
 }
 
-void ObjectManager::render(sf::RenderWindow& window) {
-    window.draw(gameBoard);
-    for (const auto& obj : m_board) {
-        if (obj) {
-            obj->render(window);
-        }
-    }
-
-    if (player) {
-        player->render(window);
-    }
-    for (const auto& guard : guards) {
-        guard->render(window);
-    }
-    for (const auto& bomb : bombs) {
-        bomb->render(window);
-    }
-}
+//void ObjectManager::render(sf::RenderWindow& window) {
+//    window.draw(gameBoard);
+//    for (const auto& obj : m_board) {
+//        if (obj) {
+//            obj->render(window);
+//        }
+//    }
+//
+//    if (player) {
+//        player->render(window);
+//    }
+//    for (const auto& guard : guards) {
+//        guard->render(window);
+//    }
+//    for (const auto& bomb : bombs) {
+//        bomb->render(window);
+//    }
+//}
 
 void ObjectManager::checkCollisions(MovableObject& movable) {
     for (const auto& staticObj : m_board) {

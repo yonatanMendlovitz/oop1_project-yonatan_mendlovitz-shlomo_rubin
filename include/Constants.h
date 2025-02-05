@@ -29,5 +29,5 @@ static const std::string ENEMY_TEXTURE = "guard.png";
 static const std::string STONE_TEXTURE = "stone.png";
 static const std::string DOOR_TEXTURE = "door.png";
 static const std::string EMPTY_TEXTURE = "blank.png";
-
+//void donothing() {};
 #endif // CONSTANTS_H

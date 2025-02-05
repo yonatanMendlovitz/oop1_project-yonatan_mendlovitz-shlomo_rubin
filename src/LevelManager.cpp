@@ -1,120 +1,171 @@
-#include "LevelManager.h"
+#include <string>
 #include <fstream>
-#include <stdexcept>
 #include <iostream>
+#include "GameManager.h"
+#include "LevelManager.h"
 
 LevelManager::LevelManager(const std::string& filePath, std::unique_ptr<Player> player, sf::RenderWindow& window)
-	: levelFilePath(filePath), player(std::move(player)), m_window(window) {
+	: levelFilePath(filePath), m_window(window) {
+	movableObjects.push_back(std::move(player)); // מוסיף את השחקן ראשון
 	loadLevel();
-}
-
-void LevelManager::checkCollisions(MovableObject& movable) {
-	for (const auto& staticObj : staticObjects)
-		if (staticObj && movable.getBounds().intersects(staticObj->getBounds()))
-			movable.handleCollision(*staticObj);
-	if (movable.getBounds().intersects(player->getBounds()))
-		player->handleCollision(movable);
 }
 
 void LevelManager::loadLevel() {
 	std::ifstream inputFile(levelFilePath);
-	if (!inputFile.is_open()) {
+	if (!inputFile.is_open())
 		throw std::runtime_error("Failed to open level file: " + levelFilePath);
-	}
 
-	staticObjects.clear();
-	movableObjects.clear();
+	levelData.clear(); // מנקה נתונים ישנים
 
 	std::string line;
-	int row = 0;
+	while (std::getline(inputFile, line))
+		levelData.push_back(line);
 
-	while (std::getline(inputFile, line)) {
-		for (int col = 0; col < line.size(); ++col) {
-			sf::Vector2f position(col * 100.0f, row * 100.0f);
-			sf::Vector2f size(100.0f, 100.0f);
+	if (levelData.empty()) {
+		throw std::runtime_error("Error: Level file is empty!");
+	}
 
-			switch (line[col]) {
-			case WALL_SYMBOL:
+	sf::Vector2f size = calculateObjectSize();
+	m_boardOffset = sf::Vector2f(
+		(m_window.getSize().x - (size.x * levelData.at(0).size())) / 2.0f,  // היסט אופקי
+		(m_window.getSize().y - (size.y * levelData.size())) / 2.0f         // היסט אנכי
+	);
+
+	for (int row = 0; row < levelData.size(); row++) {
+		for (int col = 0; col < levelData[row].size(); ++col) {  // משתמש בגודל האמיתי של השורה
+			sf::Vector2f position(col * size.x, row * size.y);
+			position += m_boardOffset; // הזזה למרכז המסך
+
+			switch (levelData[row][col]) {
+			case '#':
 				staticObjects.push_back(std::make_unique<Wall>(position, size));
 				break;
-			case GUARD_SYMBOL:
+			case '!':
 				movableObjects.push_back(std::make_unique<Guard>(position, size));
 				break;
-			case STONE_SYMBOL:
+			case '@':
 				staticObjects.push_back(std::make_unique<Stone>(position, size));
 				break;
-				//case GIFT_SYMBOL:  xyz
-					//staticObjects.push_back(std::make_unique<Gift>(position, size));
-			case PLAYER_SYMBOL:
-				if (!player) {
-					throw std::runtime_error("Player was not provided to LevelManager!");
-				}
-				player->setPosition(position);
-				player->setSize(size);
+			case 'D':
+				staticObjects.push_back(std::make_unique<Door>(position, size));
 				break;
-			default:
+			case '/':
+				if (!movableObjects.empty()) {
+					movableObjects.at(0)->setPosition(position);
+					movableObjects.at(0)->setSize(size);
+				}
 				break;
 			}
 		}
-		++row;
 	}
 }
 
 std::unique_ptr<Player> LevelManager::run() {
 	sf::Clock clock;
 
-	while (m_window.isOpen() && player->getLives()) {
+	while (m_window.isOpen() && movableObjects.at(0)->isAlive()) {
 		float deltaTime = clock.restart().asSeconds();
-
-		handleInput(m_window);
+		handleInput();
 		update(deltaTime);
-		render(m_window);
-		for (auto& movable : movableObjects)
-			checkCollisions(*movable);
-		checkCollisions(*player);
+		render();
+
 		if (isLevelCompleted()) {
 			break;
 		}
 	}
-	return std::move(player);
+	return std::unique_ptr<Player>(static_cast<Player*>(movableObjects.at(0).release()));
 }
 
-void LevelManager::handleInput(sf::RenderWindow& window) {
+void LevelManager::handleInput() {
 	sf::Event event;
-	while (window.pollEvent(event)) {
-		if (event.type == sf::Event::Closed) {
-			window.close();
+	while (m_window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed)
+			m_window.close();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::B))
+			dynamic_cast<Player*>(movableObjects.at(0).get())->placeBomb(bombs);
+		if (event.type == sf::Event::Resized) {
+			updateObjectSizes();
 		}
 	}
 }
 
 void LevelManager::update(float deltaTime) {
-	if (player) {
-		player->update(deltaTime);
-	}
-	for (auto& guard : movableObjects) {
-		guard->update(deltaTime);
+	bombs.erase(std::remove_if(bombs.begin(), bombs.end(), [](const std::unique_ptr<Bomb>& bomb) { return !bomb->isAlive(); }), bombs.end());
+	movableObjects.erase(std::remove_if(movableObjects.begin(), movableObjects.end(), [](const std::unique_ptr<MovableObject>& movable) { return !movable->isAlive(); }), movableObjects.end());
+	staticObjects.erase(std::remove_if(staticObjects.begin(), staticObjects.end(), [](const std::unique_ptr<StaticObject>& obj) { return !obj->isAlive(); }), staticObjects.end());
+
+	for (auto& movable : movableObjects)
+		movable->update(deltaTime);
+	for (auto& bomb : bombs) {
+		bomb->update(deltaTime);
+		if (bomb->isExploded())
+			bomb->explode(staticObjects, movableObjects);
 	}
 
-	//CollisionHandler::checkCollisions(movableObjects, staticObjects);
+	CollisionHandler::checkCollisions(movableObjects, staticObjects);
+	CollisionHandler::checkMovableCollisions(movableObjects);
 }
 
-void LevelManager::render(sf::RenderWindow& window) {
-	window.clear();
-
-	for (const auto& obj : staticObjects) {
-		obj->render(window);
-	}
-	for (const auto& guard : movableObjects) {
-		guard->render(window);
-	}
-	if (player) {
-		player->render(window);
-	}
-
-	window.display();
+void LevelManager::render() {
+	m_window.clear(sf::Color::Magenta);
+	for (const auto& obj : staticObjects) obj->render(m_window);
+	for (const auto& bomb : bombs) bomb->render(m_window);
+	for (const auto& movable : movableObjects) movable->render(m_window);
+	m_window.display();
 }
 
 bool LevelManager::isLevelCompleted() const {
-	return false;
+	return false; // לעתיד: בדיקה אם השחקן עבר שלב
 }
+
+sf::Vector2f LevelManager::calculateObjectSize() const {
+	if (levelData.empty()) return sf::Vector2f(50.f, 50.f); // ברירת מחדל אם אין נתונים
+
+	float cellWidth = m_window.getSize().x / static_cast<float>(levelData.at(0).size());
+	float cellHeight = m_window.getSize().y / static_cast<float>(levelData.size());
+	float squareSize = std::min(cellWidth, cellHeight);
+	return sf::Vector2f(squareSize, squareSize);
+}
+
+void LevelManager::updateObjectSizes() {
+	if (levelData.empty()) return;
+	// חישוב גודל חדש לאובייקטים
+	sf::Vector2f newSize = calculateObjectSize();
+
+	// חישוב היסט מרכזי
+	m_boardOffset = sf::Vector2f(
+		(m_window.getSize().x - (levelData.at(0).size() * newSize.x)) / 2.0f,
+		(m_window.getSize().y - (levelData.size() * newSize.y)) / 2.0f
+	) - m_boardOffset;
+
+	// עדכון אובייקטים נייחים
+	for (auto& obj : staticObjects) {
+		sf::Vector2f normalizedPos = obj->getPosition();
+		normalizedPos.x = (normalizedPos.x / obj->getSize().x) * newSize.x + m_boardOffset.x;
+		normalizedPos.y = (normalizedPos.y / obj->getSize().y) * newSize.y + m_boardOffset.y;
+
+		obj->setSize(newSize);
+		obj->setPosition(normalizedPos);
+	}
+
+	// עדכון אובייקטים ניידים (אם יש צורך)
+	for (auto& obj : movableObjects) {
+		sf::Vector2f normalizedPos = obj->getPosition();
+		normalizedPos.x = (normalizedPos.x / obj->getSize().x) * newSize.x + m_boardOffset.x;
+		normalizedPos.y = (normalizedPos.y / obj->getSize().y) * newSize.y + m_boardOffset.y;
+
+		obj->setSize(newSize);
+		obj->setPosition(normalizedPos);
+	}
+
+	for (auto& bomb : bombs) {
+		sf::Vector2f newPos = bomb->getPosition();
+		newPos.x = (newPos.x / bomb->getSize().x) * newSize.x + m_boardOffset.x;
+		newPos.y = (newPos.y / bomb->getSize().y) * newSize.y + m_boardOffset.y;
+
+		bomb->setSize(newSize);
+		bomb->setPosition(newPos);
+	}
+}
+
+

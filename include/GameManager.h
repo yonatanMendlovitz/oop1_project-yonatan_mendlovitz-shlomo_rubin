@@ -1,8 +1,11 @@
-#pragma once
-#include <SFML/Graphics.hpp>
+#ifndef GAME_MANAGER_H
+#define GAME_MANAGER_H
+
 #include <memory>
-#include "LevelManager.h"
-#include "Player.h"
+#include <SFML/Graphics.hpp>
+
+class LevelManager;
+class Player;
 
 class GameManager {
 public:
@@ -14,3 +17,4 @@ private:
     std::unique_ptr<Player> player;
 };
 
+#endif // GAME_MANAGER_H

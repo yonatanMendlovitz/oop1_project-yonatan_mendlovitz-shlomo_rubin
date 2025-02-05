@@ -1,7 +1,7 @@
 ﻿#include "Guard.h"
 #include "Stone.h"
 #include "Player.h"
-#include <iostream>
+//#include <iostream>
 #include <cmath>
 
 Guard::Guard(const sf::Vector2f& position, const sf::Vector2f& size)
@@ -10,7 +10,6 @@ Guard::Guard(const sf::Vector2f& position, const sf::Vector2f& size)
     direction = RIGHT;
 }
 
-// ✅ Now we implement update(float deltaTime)
 void Guard::update(float deltaTime) {
     sf::Vector2f newPosition = m_position + (velocity * direction * deltaTime);
 
@@ -23,8 +22,7 @@ void Guard::update(float deltaTime) {
     }
 }
 
-// ✅ Update that considers player movement
-void Guard::update(float deltaTime, const Player& player) {
+void Guard::update(float deltaTime, const Player& player) {//xyz
     float distance = std::sqrt(
         std::pow(player.getPosition().x - m_position.x, 2) +
         std::pow(player.getPosition().y - m_position.y, 2)
@@ -38,10 +36,9 @@ void Guard::update(float deltaTime, const Player& player) {
         }
     }
 
-    update(deltaTime); // ✅ Call default movement update
+    update(deltaTime);
 }
 
-// Handles collisions with different objects
 void Guard::handleCollision(GameObject& gameObject) { gameObject.handleCollision(*this); }
 void Guard::handleCollision(Guard& guard) {}
 void Guard::handleCollision(Wall& wall) {

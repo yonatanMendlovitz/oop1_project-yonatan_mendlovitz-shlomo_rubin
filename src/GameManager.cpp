@@ -1,17 +1,19 @@
+//#include <string>
+//#include <fstream>
+//#include <iostream>
 #include "GameManager.h"
-#include <iostream>
+#include "LevelManager.h"
+
 
 GameManager::GameManager()
-    : window(sf::VideoMode(800, 600), "My Game") {
-    player = std::make_unique<Player>(sf::Vector2f(100, 100), sf::Vector2f(50, 50));
+    : window(sf::VideoMode(800, 600), "Bomberman") {
+    player = std::make_unique<Player>(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 }
 
 void GameManager::run() {
-    while (window.isOpen() && player->anIAlive()) {
+    while (window.isOpen() && player->getLives()) {
         LevelManager level("level1.txt", std::move(player), window);
-        player = level.run();  // החזרת השחקן בסיום השלב
+        player = level.run();  
     }
-
     std::cout << "Game Over!" << std::endl;
 }
-

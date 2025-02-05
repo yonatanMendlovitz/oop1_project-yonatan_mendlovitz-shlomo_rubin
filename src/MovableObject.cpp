@@ -1,6 +1,6 @@
 #include "MovableObject.h"
 #include "StaticObject.h"
-#include <iostream>	
+//#include <iostream>	
 #include <algorithm> // For std::min
 
 void MovableObject::separateFromStatic(const StaticObject& staticObject) {
@@ -79,7 +79,7 @@ float MovableObject::getVelocity() const {
 	return velocity;
 }
 
-bool MovableObject::anIAlive()
-{
-    return iAmAlive;
-}
+//bool MovableObject::isAlive()
+//{
+//    return isAlive;
+//}
