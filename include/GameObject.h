@@ -16,7 +16,7 @@ protected:
 	sf::Vector2f m_size;
 	sf::Sprite m_sprite;
 	bool isActive = true; 
-	void updateSprite();
+	//void updateSprite();
 
 public:
 	GameObject(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture);

@@ -33,12 +33,12 @@ void GameObject::render(sf::RenderWindow& window) const {
 	window.draw(m_sprite);
 }
 
-void GameObject::updateSprite() {
+//void GameObject::updateSprite() {
 	//setPosition(m_position);
 	//setSize(m_size);
 	//m_sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(m_size.x), static_cast<int>(m_size.y)));
 	//m_sprite.setPosition(m_position);
-}
+//}
 
 void GameObject::setPosition(const sf::Vector2f& pos) {
 	m_position = pos;
@@ -47,13 +47,10 @@ void GameObject::setPosition(const sf::Vector2f& pos) {
 
 void GameObject::setSize(const sf::Vector2f& size) {
 	m_size = size;
-	if (m_sprite.getTexture()) { // בדיקה אם קיימת טקסטורה
+	if (m_sprite.getTexture())
 		m_sprite.setScale(sf::Vector2f(
 			m_size.x / m_sprite.getTexture()->getSize().x,
-			m_size.y / m_sprite.getTexture()->getSize().y
-		));
-		//m_sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(size.x), static_cast<int>(size.y)));
-	}
+			m_size.y / m_sprite.getTexture()->getSize().y));
 }
 
 //void GameObject::setSize(const sf::Vector2f& size) {

@@ -36,7 +36,7 @@ void MovableObject::separateFromStatic(const StaticObject& staticObject) {
         }
 
         // Update the sprite position after adjustment
-        updateSprite();
+        //updateSprite();
     }
 }
 
@@ -75,7 +75,7 @@ sf::FloatRect MovableObject::getBounds() const {
 }
 
 float MovableObject::getVelocity() const {
-	std::cout << velocity << '\n';//xyz
+	//std::cout << velocity << '\n';//xyz
 	return velocity;
 }
 

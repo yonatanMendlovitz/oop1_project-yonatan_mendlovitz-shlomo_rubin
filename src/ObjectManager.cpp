@@ -69,7 +69,7 @@ void ObjectManager::update(float deltaTime) {
         checkCollisions(*guard);
     }
     for (auto& bomb : bombs) {
-        bomb->update(deltaTime);//xyz
+        bomb->update(deltaTime);
     }
 }
 
