@@ -110,7 +110,8 @@ void LevelManager::render() {
 	m_window.clear(sf::Color::Magenta);
 	for (const auto& obj : staticObjects) obj->render(m_window);
 	for (const auto& movable : movableObjects) movable->render(m_window);
-	for (const auto& bomb : bombs) bomb->render(m_window);
+	for (const auto& bomb : bombs) 
+		bomb->render(m_window);
 	m_window.display();
 }
 
