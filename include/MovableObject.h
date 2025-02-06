@@ -23,6 +23,8 @@ public:
     float getVelocity() const;
     virtual void update(float deltaTime) = 0;
     virtual void die() = 0;
+    void setInitialPosition(const sf::Vector2f& startPos);
+    void resetPosition();
 };
 
 #endif // MOVABLE_OBJECT_H

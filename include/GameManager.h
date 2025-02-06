@@ -1,8 +1,10 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
-#include <memory>
 #include <SFML/Graphics.hpp>
+#include <memory>
+#include <vector>
+#include <string>
 
 class LevelManager;
 class Player;
@@ -14,7 +16,10 @@ public:
 
 private:
     sf::RenderWindow window;
+    std::vector<std::string> levelFiles;
     std::unique_ptr<Player> player;
+
+    void loadLevelFiles();
 };
 
 #endif // GAME_MANAGER_H

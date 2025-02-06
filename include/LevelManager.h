@@ -1,7 +1,6 @@
 #ifndef LEVEL_MANAGER_H
 #define LEVEL_MANAGER_H
 
-#pragma once
 #include <vector>
 #include <memory>
 #include <string>
@@ -12,8 +11,8 @@
 #include "Guard.h"
 #include "Wall.h"
 #include "Stone.h"
-#include "Door.h"
 #include "Bomb.h"
+#include "Door.h"
 #include "CollisionHandler.h"
 
 class LevelManager {
@@ -27,9 +26,9 @@ private:
     std::vector<std::unique_ptr<StaticObject>> staticObjects;
     std::vector<std::unique_ptr<MovableObject>> movableObjects;
     std::vector<std::unique_ptr<Bomb>> bombs;
-    std::vector<std::string> levelData; 
-    sf::Vector2f m_boardOffset{0.0f,0.0f};
-    sf::Vector2f m_size{0.0f,0.0f};
+    std::vector<std::string> levelData;
+    sf::Vector2f m_boardOffset;
+    sf::Vector2f m_size;
 
     void loadLevel();
     void handleInput();
@@ -40,4 +39,4 @@ private:
     void updateObjectSizes();
 };
 
-#endif 
+#endif // LEVEL_MANAGER_H

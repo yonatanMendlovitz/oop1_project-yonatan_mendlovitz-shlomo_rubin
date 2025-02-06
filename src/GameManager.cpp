@@ -2,20 +2,15 @@
 #include "LevelManager.h"
 #include <iostream>
 #include <fstream>
-#include <vector>
 
 GameManager::GameManager()
     : window(sf::VideoMode(800, 600), "Bomberman") {
-    sf::Vector2f playerSize(50.0f, 50.0f);
-    player = std::make_unique<Player>(sf::Vector2f(0, 0), playerSize);
+    player = std::make_unique<Player>(sf::Vector2f(0, 0), sf::Vector2f(50, 50));
+    loadLevelFiles();
 }
 
-void GameManager::run() {
-    std::cout << "Game started!" << std::endl;
-
-    std::vector<std::string> levelFiles;
+void GameManager::loadLevelFiles() {
     std::ifstream file("fileList.txt");
-
     if (!file) {
         std::cerr << "Error: Could not open fileList.txt!" << std::endl;
         return;
@@ -27,14 +22,15 @@ void GameManager::run() {
             levelFiles.push_back(levelName);
         }
     }
-    file.close();
 
     if (levelFiles.empty()) {
         std::cerr << "Error: No levels found in fileList.txt!" << std::endl;
-        return;
     }
+}
 
-    // ריצה על השלבים לפי הסדר
+void GameManager::run() {
+    std::cout << "Game started!" << std::endl;
+
     for (const auto& levelFile : levelFiles) {
         if (!window.isOpen() || !player || player->getLives() <= 0)
             break;

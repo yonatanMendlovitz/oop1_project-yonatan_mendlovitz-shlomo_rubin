@@ -1,12 +1,10 @@
-#include <string>
-#include <fstream>
-#include <iostream>
-#include "GameManager.h"
 #include "LevelManager.h"
+#include <iostream>
+#include <fstream>
 
 LevelManager::LevelManager(const std::string& filePath, std::unique_ptr<Player> player, sf::RenderWindow& window)
 	: levelFilePath(filePath), m_window(window) {
-	movableObjects.push_back(std::move(player)); // מוסיף את השחקן ראשון
+	movableObjects.push_back(std::move(player));
 	loadLevel();
 }
 
@@ -15,26 +13,24 @@ void LevelManager::loadLevel() {
 	if (!inputFile.is_open())
 		throw std::runtime_error("Failed to open level file: " + levelFilePath);
 
-	levelData.clear(); // מנקה נתונים ישנים
-
+	levelData.clear();
 	std::string line;
 	while (std::getline(inputFile, line))
 		levelData.push_back(line);
 
-	if (levelData.empty()) {
+	if (levelData.empty())
 		throw std::runtime_error("Error: Level file is empty!");
-	}
 
 	sf::Vector2f size = calculateObjectSize();
 	m_boardOffset = sf::Vector2f(
-		(m_window.getSize().x - (size.x * levelData.at(0).size())) / 2.0f,  // היסט אופקי
-		(m_window.getSize().y - (size.y * levelData.size())) / 2.0f         // היסט אנכי
+		(m_window.getSize().x - (size.x * levelData.at(0).size())) / 2.0f,
+		(m_window.getSize().y - (size.y * levelData.size())) / 2.0f
 	);
 
-	for (int row = 0; row < levelData.size(); row++) {
-		for (int col = 0; col < levelData[row].size(); ++col) {  // משתמש בגודל האמיתי של השורה
+	for (size_t row = 0; row < levelData.size(); ++row) {
+		for (size_t col = 0; col < levelData[row].size(); ++col) {
 			sf::Vector2f position(col * size.x, row * size.y);
-			position += m_boardOffset; // הזזה למרכז המסך
+			position += m_boardOffset;
 
 			switch (levelData[row][col]) {
 			case '#':
@@ -110,18 +106,16 @@ void LevelManager::render() {
 	m_window.clear(sf::Color::Magenta);
 	for (const auto& obj : staticObjects) obj->render(m_window);
 	for (const auto& movable : movableObjects) movable->render(m_window);
-	for (const auto& bomb : bombs) 
-		bomb->render(m_window);
+	for (const auto& bomb : bombs) bomb->render(m_window);
 	m_window.display();
 }
 
 bool LevelManager::isLevelCompleted() const {
-	return false; // לעתיד: בדיקה אם השחקן עבר שלב
+	return false;//levelFilePath.at(5) != '2';
 }
 
 sf::Vector2f LevelManager::calculateObjectSize() const {
-	if (levelData.empty()) return sf::Vector2f(50.f, 50.f); // ברירת מחדל אם אין נתונים
-
+	if (levelData.empty()) return sf::Vector2f(50.f, 50.f);
 	float cellWidth = m_window.getSize().x / static_cast<float>(levelData.at(0).size());
 	float cellHeight = m_window.getSize().y / static_cast<float>(levelData.size());
 	float squareSize = std::min(cellWidth, cellHeight);
@@ -130,6 +124,7 @@ sf::Vector2f LevelManager::calculateObjectSize() const {
 
 void LevelManager::updateObjectSizes() {
 	if (levelData.empty()) return;
+
 	// חישוב גודל חדש לאובייקטים
 	sf::Vector2f newSize = calculateObjectSize();
 
@@ -137,36 +132,34 @@ void LevelManager::updateObjectSizes() {
 	m_boardOffset = sf::Vector2f(
 		(m_window.getSize().x - (levelData.at(0).size() * newSize.x)) / 2.0f,
 		(m_window.getSize().y - (levelData.size() * newSize.y)) / 2.0f
-	) - m_boardOffset;
+	);
 
-	// עדכון אובייקטים נייחים
+	// עדכון גודל ומיקום של האובייקטים
 	for (auto& obj : staticObjects) {
-		sf::Vector2f normalizedPos = obj->getPosition();
-		normalizedPos.x = (normalizedPos.x / obj->getSize().x) * newSize.x + m_boardOffset.x;
-		normalizedPos.y = (normalizedPos.y / obj->getSize().y) * newSize.y + m_boardOffset.y;
-
 		obj->setSize(newSize);
-		obj->setPosition(normalizedPos);
+		obj->setPosition(sf::Vector2f(
+			(obj->getPosition().x / m_size.x) * newSize.x + m_boardOffset.x,
+			(obj->getPosition().y / m_size.y) * newSize.y + m_boardOffset.y
+		));
 	}
 
-	// עדכון אובייקטים ניידים (אם יש צורך)
 	for (auto& obj : movableObjects) {
-		sf::Vector2f normalizedPos = obj->getPosition();
-		normalizedPos.x = (normalizedPos.x / obj->getSize().x) * newSize.x + m_boardOffset.x;
-		normalizedPos.y = (normalizedPos.y / obj->getSize().y) * newSize.y + m_boardOffset.y;
-
 		obj->setSize(newSize);
-		obj->setPosition(normalizedPos);
+		obj->setPosition(sf::Vector2f(
+			(obj->getPosition().x / m_size.x) * newSize.x + m_boardOffset.x,
+			(obj->getPosition().y / m_size.y) * newSize.y + m_boardOffset.y
+		));
 	}
 
 	for (auto& bomb : bombs) {
-		sf::Vector2f newPos = bomb->getPosition();
-		newPos.x = (newPos.x / bomb->getSize().x) * newSize.x + m_boardOffset.x;
-		newPos.y = (newPos.y / bomb->getSize().y) * newSize.y + m_boardOffset.y;
-
 		bomb->setSize(newSize);
-		bomb->setPosition(newPos);
+		bomb->setPosition(sf::Vector2f(
+			(bomb->getPosition().x / m_size.x) * newSize.x + m_boardOffset.x,
+			(bomb->getPosition().y / m_size.y) * newSize.y + m_boardOffset.y
+		));
 	}
+
+	// עדכון גודל נוכחי
+	m_size = newSize;
+
 }
-
-
