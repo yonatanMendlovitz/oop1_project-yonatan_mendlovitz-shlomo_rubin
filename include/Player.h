@@ -32,7 +32,7 @@ public:
 	void handleCollision(Player&) override {};
 	void handleCollision(Stone& stone) override { separateFromStatic(stone); direction = sf::Vector2f(0, 0); };
 	void handleCollision(Wall& wall) override { separateFromStatic(wall); direction = sf::Vector2f(0, 0); };
-
+	void resetPosition() override;
 
 };
 

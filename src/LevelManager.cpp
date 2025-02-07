@@ -1,4 +1,4 @@
-#include "LevelManager.h"
+ο»Ώ#include "LevelManager.h"
 #include <iostream>
 #include <fstream>
 
@@ -49,6 +49,7 @@ void LevelManager::loadLevel() {
 				if (!movableObjects.empty()) {
 					movableObjects.at(0)->setPosition(position);
 					movableObjects.at(0)->setSize(size);
+					movableObjects.at(0)->setInitialPosition(position);
 				}
 				break;
 			}
@@ -59,7 +60,7 @@ void LevelManager::loadLevel() {
 std::unique_ptr<Player> LevelManager::run() {
 	sf::Clock clock;
 
-	while (m_window.isOpen() && movableObjects.at(0)->isAlive()) {
+	while (m_window.isOpen()) {
 		float deltaTime = clock.restart().asSeconds();
 		handleInput();
 		update(deltaTime);
@@ -68,6 +69,13 @@ std::unique_ptr<Player> LevelManager::run() {
 		if (isLevelCompleted()) {
 			break;
 		}
+		if (!movableObjects.at(0)->isAlive())
+		{
+			resetPositions();
+			if (!movableObjects.at(0)->isAlive())
+				break;
+		}
+
 	}
 	return std::unique_ptr<Player>(static_cast<Player*>(movableObjects.at(0).release()));
 }
@@ -125,16 +133,16 @@ sf::Vector2f LevelManager::calculateObjectSize() const {
 void LevelManager::updateObjectSizes() {
 	if (levelData.empty()) return;
 
-	// ηιωεα βεγμ ηγω μΰεαιιχθιν
+	// Χ—Χ™Χ©Χ•Χ‘ Χ’Χ•Χ“Χ Χ—Χ“Χ© ΧΧΧ•Χ‘Χ™Χ™Χ§ΧΧ™Χ
 	sf::Vector2f newSize = calculateObjectSize();
 
-	// ηιωεα διρθ ξψλζι
+	// Χ—Χ™Χ©Χ•Χ‘ Χ”Χ™Χ΅Χ ΧΧ¨Χ›Χ–Χ™
 	m_boardOffset = sf::Vector2f(
 		(m_window.getSize().x - (levelData.at(0).size() * newSize.x)) / 2.0f,
 		(m_window.getSize().y - (levelData.size() * newSize.y)) / 2.0f
 	);
 
-	// ςγλεο βεγμ εξιχεν ωμ δΰεαιιχθιν
+	// ΧΆΧ“Χ›Χ•Χ Χ’Χ•Χ“Χ Χ•ΧΧ™Χ§Χ•Χ Χ©Χ Χ”ΧΧ•Χ‘Χ™Χ™Χ§ΧΧ™Χ
 	for (auto& obj : staticObjects) {
 		obj->setSize(newSize);
 		obj->setPosition(sf::Vector2f(
@@ -159,7 +167,27 @@ void LevelManager::updateObjectSizes() {
 		));
 	}
 
-	// ςγλεο βεγμ πεληι
+	// ΧΆΧ“Χ›Χ•Χ Χ’Χ•Χ“Χ Χ Χ•Χ›Χ—Χ™
 	m_size = newSize;
 
+}
+
+void LevelManager::resetLevel() {
+	//std::unique_ptr<Player> tempPlayer = std::move(movableObjects[0]);
+	std::unique_ptr<Player> tempPlayer = std::unique_ptr<Player>(static_cast<Player*>(movableObjects[0].release()));
+	staticObjects.clear();
+	movableObjects.clear();
+	bombs.clear();
+
+	loadLevel();
+
+	movableObjects.insert(movableObjects.begin(), std::move(tempPlayer));
+	movableObjects[0]->resetPosition();
+}
+
+void LevelManager::resetPositions() {
+	for (auto& obj : movableObjects)
+		obj->resetPosition();
+
+	bombs.clear();
 }

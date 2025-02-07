@@ -19,6 +19,7 @@ public:
     void handleCollision(Wall& wall) override;
     void handleCollision(Player& player) override;
     void handleCollision(Stone& stone) override;
+    void resetPosition() override;
     void die() override { destroy(); };
     void onExplosion() override { destroy(); } 
 

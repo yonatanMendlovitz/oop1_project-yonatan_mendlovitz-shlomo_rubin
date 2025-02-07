@@ -29,7 +29,8 @@ private:
     std::vector<std::string> levelData;
     sf::Vector2f m_boardOffset;
     sf::Vector2f m_size;
-
+    void resetLevel();
+    void resetPositions();
     void loadLevel();
     void handleInput();
     void update(float deltaTime);

@@ -50,3 +50,8 @@ void Guard::handleCollision(Stone& stone) {
     separateFromStatic(stone);
     setDirection(sf::Vector2f(-direction.x, -direction.y));
 }
+
+void Guard::resetPosition() {
+    setPosition(initialPosition);
+    isActive = true;
+}
