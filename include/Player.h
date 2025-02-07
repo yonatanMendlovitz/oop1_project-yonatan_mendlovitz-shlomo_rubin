@@ -27,11 +27,11 @@ public:
 	int  getLives() const { return lives; };
 	void placeBomb(std::vector<std::unique_ptr<Bomb>>& objects);
 	void onExplosion() override { die(); };
-	void die() override { destroy(); lives--; };
+	void die() override;
 	void handleCollision(GameObject& gameObject) override { gameObject.handleCollision(*this); }
-	void handleCollision(Guard& guard) override { if (!isAlive()) return; std::cout << "player is dead :(\n"; die(); };
+	void handleCollision(Guard& guard) override { if (!isAlive()) return; die(); };
 	void handleCollision(Player&) override {};
-	void handleCollision(Door& door) override { setLevelCompleted(true); std::cout << "sdhfsduhf\n"; };
+	void handleCollision(Door& door) override { setLevelCompleted(true); };
 	void handleCollision(Stone& stone) override { separateFromStatic(stone); direction = sf::Vector2f(0, 0); };
 	void handleCollision(Wall& wall) override { separateFromStatic(wall); direction = sf::Vector2f(0, 0); };
 	void resetPosition() override;

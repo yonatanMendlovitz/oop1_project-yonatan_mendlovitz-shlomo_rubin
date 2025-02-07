@@ -30,7 +30,8 @@ private:
 	std::vector<std::string> levelData;
 	sf::Vector2f m_boardOffset;
 	sf::Vector2f m_size;
-	LevelTimer levelTimer = LevelTimer(60.0f);
+	LevelTimer levelTimer = LevelTimer(30.0f);
+	
 	void timeIsUp();
 	void playerHurt();
 	void loadLevel();

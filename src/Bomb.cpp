@@ -15,10 +15,11 @@ void Bomb::update(float deltaTime) {
 	if (elapsedTime >= TIMER) {
 		if (!exploded) {
 			exploded = true;
-			auto newPosition = m_position - m_size, newSize = sf::Vector2f(m_size.x*3, m_size.y*3);
+			auto newPosition = m_position - m_size, newSize = sf::Vector2f(m_size.x * 3, m_size.y * 3);
 			m_sprite.setTexture(ResourceManager::getInstance().getTexture("explosion.png"));
 			setPosition(newPosition);
-			setSize(newSize);		
+			setSize(newSize);
+			//ResourceManager::getInstance().playSound("explosion.wav");
 		}
 		explosionTime -= deltaTime;
 	}

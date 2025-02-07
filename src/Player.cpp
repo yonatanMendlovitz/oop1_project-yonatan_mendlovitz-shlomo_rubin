@@ -57,7 +57,12 @@ void Player::placeBomb(std::vector<std::unique_ptr<Bomb>>& bombs) {
 	std::cout << "Bomb placed at: " << bombs.at(bombs.size() - 1)->getPosition().x << ", " << bombs.at(bombs.size() - 1)->getPosition().y << '\n';
 }
 
-void Player::resetPosition(){
+void Player::die() {
+	destroy(); lives--;
+	ResourceManager::getInstance().playSound("death.wav");
+};
+
+void Player::resetPosition() {
 	setPosition(initialPosition);
 	isActive = lives > 0;
 }

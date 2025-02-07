@@ -9,7 +9,7 @@ LevelManager::LevelManager(const std::string& filePath, std::unique_ptr<Player> 
 	loadLevel();
 	//render();
 	TransitionManager::fadeIn(m_window);
-	
+
 }
 
 void LevelManager::loadLevel() {
@@ -188,6 +188,7 @@ void LevelManager::timeIsUp() {
 	movableObjects.insert(movableObjects.begin(), std::move(tempPlayer));
 	movableObjects[0]->resetPosition();
 	static_cast<Player*>(movableObjects[0].get())->die();
+	ResourceManager::getInstance().playSound("timeUp.wav");
 	levelTimer.reset();
 }
 
