@@ -19,7 +19,7 @@ void Bomb::update(float deltaTime) {
 			m_sprite.setTexture(ResourceManager::getInstance().getTexture("explosion.png"));
 			setPosition(newPosition);
 			setSize(newSize);
-			//ResourceManager::getInstance().playSound("explosion.wav");
+			ResourceManager::getInstance().playSound("explosion.wav");
 		}
 		explosionTime -= deltaTime;
 	}

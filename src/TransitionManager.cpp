@@ -43,6 +43,5 @@ void TransitionManager::shakeScreen(sf::RenderWindow& window) {
         window.setPosition(originalPos + sf::Vector2i(rand() % 10 - 5, rand() % 10 - 5));
         sf::sleep(sf::milliseconds(50));
     }
-
     window.setPosition(originalPos);
 }
