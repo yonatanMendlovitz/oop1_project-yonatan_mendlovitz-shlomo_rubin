@@ -23,7 +23,7 @@ public:
 
 	void onExplosionEffect();
 	void addScore(int points);
-	int getLives() const { return lives; };
+	int  getLives() const { return lives; };
 	void placeBomb(std::vector<std::unique_ptr<Bomb>>& objects);
 	void onExplosion() override { die(); };
 	void die() override { destroy(); lives--; };

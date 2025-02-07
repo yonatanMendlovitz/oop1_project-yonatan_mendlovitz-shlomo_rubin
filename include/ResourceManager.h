@@ -11,8 +11,6 @@ class ResourceManager {
 private:
     std::unordered_map<std::string, sf::Texture> textures;
     std::unordered_map<std::string, sf::SoundBuffer> sounds;
-
-    // Map of character keys to file paths for textures
     std::unordered_map<char, std::string> textureMapping;
 
     ResourceManager() {
@@ -37,8 +35,7 @@ public:
 
     ResourceManager(const ResourceManager&) = delete;
     ResourceManager& operator=(const ResourceManager&) = delete;
-
-    // Get texture by file path
+\
     const sf::Texture& getTexture(const std::string& filePath) {
         if (textures.find(filePath) == textures.end()) {
             sf::Texture texture;
@@ -50,7 +47,6 @@ public:
         return textures[filePath];
     }
 
-    // Get sound by file path
     const sf::SoundBuffer& getSound(const std::string& filePath) {
         if (sounds.find(filePath) == sounds.end()) {
             sf::SoundBuffer sound;

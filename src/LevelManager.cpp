@@ -60,22 +60,13 @@ void LevelManager::loadLevel() {
 std::unique_ptr<Player> LevelManager::run() {
 	sf::Clock clock;
 
-	while (m_window.isOpen()) {
+	while (m_window.isOpen() && static_cast<Player*>(movableObjects[0].get())->getLives() > 0 && !isLevelCompleted()) {
 		float deltaTime = clock.restart().asSeconds();
 		handleInput();
 		update(deltaTime);
 		render();
-
-		if (isLevelCompleted()) {
-			break;
-		}
 		if (!movableObjects.at(0)->isAlive())
-		{
-			resetPositions();
-			if (!movableObjects.at(0)->isAlive())
-				break;
-		}
-
+			playerHurt();
 	}
 	return std::unique_ptr<Player>(static_cast<Player*>(movableObjects.at(0).release()));
 }
@@ -94,6 +85,11 @@ void LevelManager::handleInput() {
 }
 
 void LevelManager::update(float deltaTime) {
+	levelTimer.update(deltaTime);
+	if (levelTimer.isTimeUp()) {
+		timeIsUp();
+		return;
+	}
 	bombs.erase(std::remove_if(bombs.begin(), bombs.end(), [](const std::unique_ptr<Bomb>& bomb) { return !bomb->isAlive(); }), bombs.end());
 	movableObjects.erase(std::remove_if(movableObjects.begin(), movableObjects.end(), [](const std::unique_ptr<MovableObject>& movable) { return !movable->isAlive(); }), movableObjects.end());
 	staticObjects.erase(std::remove_if(staticObjects.begin(), staticObjects.end(), [](const std::unique_ptr<StaticObject>& obj) { return !obj->isAlive(); }), staticObjects.end());
@@ -119,7 +115,7 @@ void LevelManager::render() {
 }
 
 bool LevelManager::isLevelCompleted() const {
-	return false;//levelFilePath.at(5) != '2';
+	return false;
 }
 
 sf::Vector2f LevelManager::calculateObjectSize() const {
@@ -172,22 +168,22 @@ void LevelManager::updateObjectSizes() {
 
 }
 
-void LevelManager::resetLevel() {
-	//std::unique_ptr<Player> tempPlayer = std::move(movableObjects[0]);
+void LevelManager::timeIsUp() {
 	std::unique_ptr<Player> tempPlayer = std::unique_ptr<Player>(static_cast<Player*>(movableObjects[0].release()));
+
 	staticObjects.clear();
 	movableObjects.clear();
 	bombs.clear();
-
 	loadLevel();
 
 	movableObjects.insert(movableObjects.begin(), std::move(tempPlayer));
 	movableObjects[0]->resetPosition();
+	static_cast<Player*>(movableObjects[0].get())->die();
+		levelTimer.reset();
 }
 
-void LevelManager::resetPositions() {
+void LevelManager::playerHurt() {
 	for (auto& obj : movableObjects)
 		obj->resetPosition();
-
 	bombs.clear();
 }

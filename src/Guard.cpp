@@ -43,8 +43,7 @@ void Guard::handleCollision(GameObject& gameObject) { gameObject.handleCollision
 void Guard::handleCollision(Guard& guard) {}
 void Guard::handleCollision(Wall& wall) {
     separateFromStatic(wall);
-    setDirection(sf::Vector2f(-direction.x, -direction.y));
-}
+    setDirection(sf::Vector2f(-direction.x, -direction.y));}
 void Guard::handleCollision(Player& player) { player.handleCollision(*this); }
 void Guard::handleCollision(Stone& stone) {
     separateFromStatic(stone);

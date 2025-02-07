@@ -15,9 +15,10 @@ void Bomb::update(float deltaTime) {
 	if (elapsedTime >= TIMER) {
 		if (!exploded) {
 			exploded = true;
-			setPosition(m_position - m_size);
-			setSize(m_size * 3.0f);
+			auto newPosition = m_position - m_size, newSize = sf::Vector2f(m_size.x*3, m_size.y * 3);
 			m_sprite.setTexture(ResourceManager::getInstance().getTexture("Explosion.png"));
+			setPosition(newPosition);
+			setSize(newSize);		
 		}
 		explosionTime -= deltaTime;
 	}
@@ -26,14 +27,13 @@ void Bomb::update(float deltaTime) {
 }
 
 void Bomb::explode(std::vector<std::unique_ptr<StaticObject>>& objects,
-					std::vector<std::unique_ptr<MovableObject>>& movables) 
+	std::vector<std::unique_ptr<MovableObject>>& movables)
 {
 	for (auto& obj : objects)
 		if (getBounds().intersects(obj->getBounds()))
 			obj->onExplosion();
 
-
 	for (auto& movable : movables)
-		if (getBounds().intersects(movable->getBounds())) 
+		if (getBounds().intersects(movable->getBounds()))
 			movable->onExplosion();
 }

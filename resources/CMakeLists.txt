@@ -10,6 +10,7 @@ configure_file("explosion.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("gameImage.jpeg" ${CMAKE_BINARY_DIR} COPYONLY)
 
 # Copy sound files
+configure_file("tick_tock.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("01_main_menu.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("02_the_level_begins.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file("03_level_theme.wav" ${CMAKE_BINARY_DIR} COPYONLY)
