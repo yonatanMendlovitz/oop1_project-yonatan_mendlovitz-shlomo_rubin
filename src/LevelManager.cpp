@@ -67,7 +67,10 @@ std::unique_ptr<Player> LevelManager::run() {
 		render();
 		if (!movableObjects.at(0)->isAlive())
 			playerHurt();
+		if (static_cast<Player*>(movableObjects[0].get())->hasCompletedLevel())
+			break;
 	}
+	static_cast<Player*>(movableObjects[0].get())->setLevelCompleted(false);
 	return std::unique_ptr<Player>(static_cast<Player*>(movableObjects.at(0).release()));
 }
 
@@ -179,7 +182,7 @@ void LevelManager::timeIsUp() {
 	movableObjects.insert(movableObjects.begin(), std::move(tempPlayer));
 	movableObjects[0]->resetPosition();
 	static_cast<Player*>(movableObjects[0].get())->die();
-		levelTimer.reset();
+	levelTimer.reset();
 }
 
 void LevelManager::playerHurt() {

@@ -42,7 +42,7 @@ void GameObject::render(sf::RenderWindow& window) const {
 
 void GameObject::setPosition(const sf::Vector2f& pos) {
 	m_position = pos;
-	m_sprite.setPosition(pos);
+	m_sprite.setPosition(m_position);
 }
 
 void GameObject::setSize(const sf::Vector2f& size) {

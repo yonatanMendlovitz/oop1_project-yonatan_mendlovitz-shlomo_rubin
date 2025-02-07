@@ -16,4 +16,5 @@ void Stone::handleCollision(GameObject& gameObject) { gameObject.handleCollision
 void Stone::handleCollision(Guard& guard) { guard.handleCollision(*this); };
 void Stone::handleCollision(Wall& wall) {}
 void Stone::handleCollision(Stone& stone) {}
-void Stone::handleCollision(Player& player) { player.handleCollision(*this); };
+void Stone::handleCollision(Player& player) { player.handleCollision(*this); }
+void Stone::handleCollision(Door& door) {}

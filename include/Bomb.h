@@ -24,6 +24,7 @@ public:
     virtual void handleCollision(Wall& wall) override {}
     virtual void handleCollision(Player& player) override {}
     virtual void handleCollision(Stone& stone) override {}
+    virtual void handleCollision(Door& door) override {}
 
     sf::FloatRect getBounds() const override { return m_sprite.getGlobalBounds(); }
     bool isExploded() {return exploded;};

@@ -13,6 +13,7 @@ private:
 	int lives;
 	int score;
 	const float baseSpeed = 100.0f;
+	bool levelCompleted = false;
 
 public:
 	Player(const sf::Vector2f& pos, const sf::Vector2f& size, const sf::Texture& texture);
@@ -30,9 +31,13 @@ public:
 	void handleCollision(GameObject& gameObject) override { gameObject.handleCollision(*this); }
 	void handleCollision(Guard& guard) override { if (!isAlive()) return; std::cout << "player is dead :(\n"; die(); };
 	void handleCollision(Player&) override {};
+	void handleCollision(Door& door) override { setLevelCompleted(true); std::cout << "sdhfsduhf\n"; };
 	void handleCollision(Stone& stone) override { separateFromStatic(stone); direction = sf::Vector2f(0, 0); };
 	void handleCollision(Wall& wall) override { separateFromStatic(wall); direction = sf::Vector2f(0, 0); };
 	void resetPosition() override;
+	void setLevelCompleted(bool completed);
+	bool hasCompletedLevel() const;        
+
 
 };
 

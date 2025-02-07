@@ -12,6 +12,7 @@ public:
     void handleCollision(Guard&) override {}
     void handleCollision(Wall&) override {}
     void handleCollision(Stone&) override {}
+    void handleCollision(Door&) override {}
 };
 
 #endif // DOOR_H

@@ -20,5 +20,6 @@ public:
     void handleCollision(Wall& wall) override;
     void handleCollision(Stone& stone) override;
     void handleCollision(Player& player) override;
+    void handleCollision(Door& door) override;
 
 };

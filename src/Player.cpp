@@ -16,9 +16,6 @@ Player::Player(const sf::Vector2f& pos, const sf::Vector2f& size)
 void Player::update(float deltaTime) {
 	handleInput();
 	setPosition(m_position + direction * velocity * deltaTime);//
-	////
-	/*m_position += direction * velocity * deltaTime;
-	updateSprite();*/
 }
 
 void Player::handleInput() {
@@ -63,5 +60,13 @@ void Player::placeBomb(std::vector<std::unique_ptr<Bomb>>& bombs) {
 void Player::resetPosition(){
 	setPosition(initialPosition);
 	isActive = lives > 0;
+}
+
+void Player::setLevelCompleted(bool completed) {
+	levelCompleted = completed;
+}
+
+bool Player::hasCompletedLevel() const {
+	return levelCompleted;
 }
 

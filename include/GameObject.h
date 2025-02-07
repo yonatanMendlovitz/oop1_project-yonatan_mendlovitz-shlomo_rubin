@@ -8,6 +8,7 @@ class Wall;
 class Player;
 class Bomb;
 class Stone;
+class Door;
 //class gift;
 
 class GameObject {
@@ -40,7 +41,7 @@ public:
 	virtual void handleCollision(Player&) = 0;
 	virtual void handleCollision(Stone&) = 0;
 	virtual void handleCollision(Bomb&) {};
-	//virtual void handleCollision(Bomb&) = 0;
+	virtual void handleCollision(Door&) = 0;
 	//xyz
 };
 

@@ -34,7 +34,6 @@ void GameManager::run() {
     for (const auto& levelFile : levelFiles) {
         if (!window.isOpen() || !player || player->getLives() <= 0)
             break;
-
         std::cout << "Loading level: " << levelFile << std::endl;
         LevelManager level(levelFile, std::move(player), window);
         player = level.run();
