@@ -1,4 +1,5 @@
 ﻿#include "LevelManager.h"
+#include "TransitionManager.h"
 #include <iostream>
 #include <fstream>
 
@@ -6,6 +7,9 @@ LevelManager::LevelManager(const std::string& filePath, std::unique_ptr<Player> 
 	: levelFilePath(filePath), m_window(window) {
 	movableObjects.push_back(std::move(player));
 	loadLevel();
+	//render();
+	TransitionManager::fadeIn(m_window);
+	
 }
 
 void LevelManager::loadLevel() {
@@ -53,6 +57,7 @@ void LevelManager::loadLevel() {
 				}
 				break;
 			}
+
 		}
 	}
 }
@@ -70,6 +75,7 @@ std::unique_ptr<Player> LevelManager::run() {
 		if (static_cast<Player*>(movableObjects[0].get())->hasCompletedLevel())
 			break;
 	}
+	TransitionManager::fadeOut(m_window);
 	static_cast<Player*>(movableObjects[0].get())->setLevelCompleted(false);
 	return std::unique_ptr<Player>(static_cast<Player*>(movableObjects.at(0).release()));
 }
@@ -186,6 +192,8 @@ void LevelManager::timeIsUp() {
 }
 
 void LevelManager::playerHurt() {
+	TransitionManager::flashRed(m_window);  // אפקט פסילה
+	TransitionManager::shakeScreen(m_window);  // רעידת מסך
 	for (auto& obj : movableObjects)
 		obj->resetPosition();
 	bombs.clear();

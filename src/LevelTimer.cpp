@@ -1,5 +1,6 @@
 ﻿#include "LevelTimer.h"
 
+
 LevelTimer::LevelTimer(float duration) : timeLeft(duration), initialTime(duration) {
     tickSound.setBuffer(ResourceManager::getInstance().getSound("tick_tock.wav"));
     tickSound.setLoop(true);

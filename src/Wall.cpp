@@ -6,7 +6,7 @@
 
 
 Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
-	: StaticObject(position, size, ResourceManager::getInstance().getTexture('#')) {
+	: StaticObject(position, size, ResourceManager::getInstance().getTexture("wall.png")) {
 	// Load wall texture from the ResourceManager
 	//const sf::Texture& texture = ResourceManager::getInstance().getTexture("wall.png");
 	//m_sprite.setTexture(texture);
