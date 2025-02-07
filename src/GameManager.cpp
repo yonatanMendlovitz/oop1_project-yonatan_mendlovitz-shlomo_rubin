@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "LevelManager.h"
+#include "Menu.h"
 #include <iostream>
 #include <fstream>
 
@@ -29,21 +30,31 @@ void GameManager::loadLevelFiles() {
 }
 
 void GameManager::run() {
-    std::cout << "Game started!" << std::endl;
-    
+    Menu menu(window);
+    int choice = menu.run();
+
+    if (choice == 2) return; // Exit
+    if (choice == 1) { // Help
+        std::cout << "Game instructions here..." << std::endl;
+        return;
+    }
+
+    // מתחילים משחק חדש
     for (const auto& levelFile : levelFiles) {
         if (!window.isOpen() || !player || player->getLives() <= 0)
             break;
+
         ResourceManager::getInstance().playMusic("03_level_theme.wav");
-        std::cout << "Loading level: " << levelFile << std::endl;
         LevelManager level(levelFile, std::move(player), window);
         player = level.run();
         ResourceManager::getInstance().stopMusic();
+
         if (!player) {
             std::cout << "Player lost all lives!" << std::endl;
             break;
         }
     }
-    
-    std::cout << "Game Over!" << std::endl;
+
+    // הצגת התפריט שוב בסוף המשחק
+    run();
 }

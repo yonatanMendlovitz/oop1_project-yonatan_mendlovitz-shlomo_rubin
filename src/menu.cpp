@@ -3,7 +3,7 @@
 #include <SFML/Window/Event.hpp>
 
 Menu::Menu(sf::RenderWindow& window) : m_window(window) {
-    m_font = ResourceManager::getInstance().getFont("resources/fonts/arial.ttf");
+    m_font = ResourceManager::getInstance().getFont("ARCADECLASSIC.TTF");
     std::vector<std::string> options = { "New Game", "Help", "Exit" };
 
     for (size_t i = 0; i < options.size(); ++i) {
