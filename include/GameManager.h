@@ -1,6 +1,6 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
-
+#include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
