@@ -3,6 +3,8 @@
 #include "Menu.h"
 #include <iostream>
 #include <fstream>
+#include "HelpScreen.h"
+
 
 GameManager::GameManager()
     : window(sf::VideoMode(800, 600), "Bomberman") {
@@ -35,11 +37,11 @@ void GameManager::run() {
 
     if (choice == 2) return; // Exit
     if (choice == 1) { // Help
-        std::cout << "Game instructions here..." << std::endl;
-        return;
+        HelpScreen help(window);
+        help.run();
+        run(); // חזרה לתפריט אחרי העזרה
     }
 
-    // מתחילים משחק חדש
     for (const auto& levelFile : levelFiles) {
         if (!window.isOpen() || !player || player->getLives() <= 0)
             break;
@@ -54,7 +56,5 @@ void GameManager::run() {
             break;
         }
     }
-
-    // הצגת התפריט שוב בסוף המשחק
     run();
 }

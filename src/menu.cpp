@@ -48,8 +48,12 @@ int Menu::run() {
                 if (event.key.code == sf::Keyboard::Up) moveUp();
                 if (event.key.code == sf::Keyboard::Down) moveDown();
                 if (event.key.code == sf::Keyboard::Enter) return m_selectedIndex;
+                if (event.key.code == sf::Keyboard::N) return m_selectedIndex = 0;
+                if (event.key.code == sf::Keyboard::H) return m_selectedIndex = 1;
+                if (event.key.code == sf::Keyboard::E) return m_selectedIndex = 1;
+
             }
         }
     }
-    return 2; // ברירת מחדל - יציאה
+    return 2; 
 }
